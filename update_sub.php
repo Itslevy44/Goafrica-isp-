@@ -1,0 +1,1 @@
+<?php $user = \App\Models\User::where("email", "kiprotichlevy0@gmail.com")->first(); if ($user) { $tenant = \App\Models\Tenant::find($user->tenant_id); if ($tenant) { $tenant->subscription_ends_at = now()->addDays(30); $tenant->save(); echo "Tenant subscription updated successfully.\n"; } else { echo "Tenant not found.\n"; } } else { echo "User not found.\n"; }
