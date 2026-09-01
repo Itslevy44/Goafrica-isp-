@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
 
 jobs:
   deploy:
@@ -16,22 +17,26 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: '8.2'
+          extensions: mbstring, xml, ctype, iconv, intl, pdo_mysql, bcmath, zip
+          coverage: none
 
       - name: Install Composer dependencies
-        run: composer install --no-dev --optimize-autoloader --prefer-dist
+        run: composer install --no-dev --optimize-autoloader --prefer-dist --no-interaction
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+          cache: 'npm'
 
       - name: Install and build frontend assets
         run: |
-          npm install
+          npm ci || npm install
           npm run build
 
-      - name: Patch public/index.php paths
+      - name: Patch public/index.php paths for cPanel
         run: |
+          sed -i "s#__DIR__.'/../storage/framework/maintenance.php'#__DIR__.'/../laravel-app/storage/framework/maintenance.php'#" public/index.php || true
           sed -i "s#__DIR__.'/../vendor/autoload.php'#__DIR__.'/../laravel-app/vendor/autoload.php'#" public/index.php
           sed -i "s#__DIR__.'/../bootstrap/app.php'#__DIR__.'/../laravel-app/bootstrap/app.php'#" public/index.php
 
@@ -41,8 +46,11 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          security: loose
+          timeout: 600000
           local-dir: ./
-          server-dir: /laravel-app/
+          server-dir: laravel-app/
           exclude: |
             **/.git*
             **/.git*/**
@@ -58,5 +66,8 @@ jobs:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftp
+          security: loose
+          timeout: 600000
           local-dir: ./public/
-          server-dir: /public_html/
+          server-dir: public_html/
