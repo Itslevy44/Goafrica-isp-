@@ -374,7 +374,7 @@
                 <p class="text-slate-500 mb-6 font-medium">Everything you need to run your ISP</p>
                 
                 <div class="flex justify-center items-baseline gap-2 mb-8 border-b border-slate-100 pb-8">
-                    <span class="text-6xl font-display font-black text-slate-900 tracking-tighter">3,000</span>
+                    <span class="text-6xl font-display font-black text-slate-900 tracking-tighter">500</span>
                     <span class="text-slate-500 font-bold">KES / mo</span>
                 </div>
                 

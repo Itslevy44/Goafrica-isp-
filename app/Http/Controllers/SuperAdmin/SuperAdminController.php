@@ -15,8 +15,8 @@ class SuperAdminController extends Controller
         $activeTenants = Tenant::where('subscription_ends_at', '>', now())->count();
         $expiredTenants = $totalTenants - $activeTenants;
         
-        // 3000 KES per active tenant
-        $monthlyRecurringRevenue = $activeTenants * 3000;
+        // 500 KES per active tenant
+        $monthlyRecurringRevenue = $activeTenants * 500;
 
         $tenants = Tenant::withCount(['networks', 'users'])
             ->orderBy('created_at', 'desc')

@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+use Illuminate\Auth\Events\Registered;
+
 class RegistrationController extends Controller
 {
     public function showRegistrationForm()
@@ -39,6 +41,7 @@ class RegistrationController extends Controller
                 'email' => $request->email,
                 'country' => $request->country,
                 'default_currency' => $region->currency,
+                'subscription_ends_at' => now()->addDays(3),
             ]);
 
             $user = User::create([
@@ -52,11 +55,14 @@ class RegistrationController extends Controller
             return $user;
         });
 
+        // Trigger verification email
+        event(new Registered($user));
+
         Auth::login($user);
 
         // Bind the current tenant since we just logged them in
         app()->instance('currentTenant', Tenant::find($user->tenant_id));
 
-        return redirect()->route('dashboard.index');
+        return redirect()->route('dashboard.index')->with('success', 'Registration successful! Please check your email to verify your account.');
     }
 }

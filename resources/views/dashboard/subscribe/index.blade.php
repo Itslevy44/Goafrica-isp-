@@ -64,7 +64,7 @@
         @endif
 
         <div class="price-tag">
-            Ksh 3,000 <span>/ month</span>
+            Ksh 500 <span>/ month</span>
         </div>
 
         @if(session('success'))
