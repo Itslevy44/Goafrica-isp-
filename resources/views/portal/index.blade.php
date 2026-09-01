@@ -196,13 +196,26 @@
         }
     }
 
-    // Initialize tabs correctly based on active errors
+    // Initialize tabs correctly based on active errors or URL param
     document.addEventListener("DOMContentLoaded", function() {
-        @if($errors->has('voucher_error') || old('voucher_code'))
+        const urlParams = new URLSearchParams(window.location.search);
+        const voucherParam = urlParams.get('voucher');
+
+        if (voucherParam) {
+            const vInput = document.getElementById('voucher_code');
+            if (vInput) {
+                let formatted = voucherParam.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+                if (formatted.length > 4) {
+                    formatted = formatted.substring(0, 4) + '-' + formatted.substring(4, 8);
+                }
+                vInput.value = formatted;
+            }
             switchTab('redeem');
-        @else
+        } else if (@json($errors->has('voucher_error') || old('voucher_code'))) {
+            switchTab('redeem');
+        } else {
             switchTab('buy');
-        @endif
+        }
         
         // Auto-format voucher input
         const voucherInput = document.getElementById('voucher_code');
