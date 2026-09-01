@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2
@@ -27,47 +29,32 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
-          cache: 'npm'
 
       - name: Install and build frontend assets
         run: |
           npm ci || npm install
           npm run build
 
-      - name: Patch public/index.php paths for cPanel
-        run: |
-          sed -i "s#__DIR__.'/../storage/framework/maintenance.php'#__DIR__.'/../laravel-app/storage/framework/maintenance.php'#" public/index.php || true
-          sed -i "s#__DIR__.'/../vendor/autoload.php'#__DIR__.'/../laravel-app/vendor/autoload.php'#" public/index.php
-          sed -i "s#__DIR__.'/../bootstrap/app.php'#__DIR__.'/../laravel-app/bootstrap/app.php'#" public/index.php
-
-      - name: Deploy app code to laravel-app
+      - name: Deploy to cPanel
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftp
+          port: 21
           security: loose
+          log-level: verbose
           timeout: 600000
           local-dir: ./
-          server-dir: laravel-app/
+          server-dir: ./
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            **/public/**
             **/tests/**
             **/storage/logs/**
             **/.env
-
-      - name: Deploy public/ contents to public_html
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-        with:
-          server: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.FTP_USERNAME }}
-          password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftp
-          security: loose
-          timeout: 600000
-          local-dir: ./public/
-          server-dir: public_html/
+            .github/**
+            phpunit.xml
+            README.md
