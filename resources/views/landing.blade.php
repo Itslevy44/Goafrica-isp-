@@ -31,6 +31,7 @@
     <title>goAfrica Connect — MikroTik Hotspot Billing & M-Pesa Automation for Africa</title>
 
     {{-- Structured Data (JSON-LD) --}}
+    @verbatim
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -62,6 +63,7 @@
         }
     }
     </script>
+    @endverbatim
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
