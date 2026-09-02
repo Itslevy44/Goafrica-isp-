@@ -1,4 +1,4 @@
-name: Deploy to cPanel via SFTP
+name: Deploy to cPanel via FTP
 
 on:
   push:
@@ -35,23 +35,27 @@ jobs:
           npm ci || npm install
           npm run build
 
-      - name: Deploy to cPanel via SFTP
-        uses: wlixcc/SFTP-Deploy-Action@v1.2.4
+      - name: Deploy to cPanel (Active Mode FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
+          server: ${{ secrets.FTP_HOST }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          server: ${{ secrets.FTP_HOST }}
-          port: 22
-          local_path: ./
-          remote_path: /public_html/
-          sftpArgs: '-o ConnectTimeout=30 -o BatchMode=no -o StrictHostKeyChecking=no'
-          delete: 'false'
-          structurize: 'true'
-
-      - name: Deployment Status
-        if: success()
-        run: echo "✅ Deployment to cPanel completed successfully!"
-
-      - name: Deployment Failed
-        if: failure()
-        run: echo "❌ Deployment failed. Check logs above for details."
+          protocol: ftp
+          port: 21
+          security: loose
+          log-level: verbose
+          timeout: 1200000
+          local-dir: ./
+          server-dir: ./
+          passive-mode: false
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            **/tests/**
+            **/storage/logs/**
+            **/.env
+            .github/**
+            phpunit.xml
+            README.md
