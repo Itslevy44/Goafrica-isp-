@@ -31,13 +31,13 @@ class BillingService
     /**
      * Resolve the Payment Gateway based on the requested name or network config.
      */
-    protected function resolveGateway(string $gatewayName, ?Tenant $tenant = null): PaymentGatewayInterface
+    protected function resolveGateway(string $gatewayName, ?Tenant $tenant = null, ?Network $network = null): PaymentGatewayInterface
     {
         if ($gatewayName === 'mock' || env('USE_MOCK_PAYMENT', false)) {
             return new MockGateway();
         }
         
-        return new MpesaGateway($tenant);
+        return new MpesaGateway($tenant, $network);
     }
 
     /**
@@ -120,7 +120,7 @@ class BillingService
         ]);
 
         // 4. Send to Payment Gateway (Using Tenant's keys)
-        $gateway = $this->resolveGateway($gatewayName, $tenant);
+        $gateway = $this->resolveGateway($gatewayName, $tenant, $network);
         $result = $gateway->initiatePayment($transaction, $phone);
 
         if ($result['success']) {

@@ -48,6 +48,16 @@ class AppServiceProvider extends ServiceProvider
             // Expose as both names so any blade template works regardless of name used
             $view->with('tenant', $tenant);
             $view->with('currentTenant', $tenant);
+
+            // Inject unread notifications for the authenticated user
+            $unreadNotifications = collect();
+            $unreadCount = 0;
+            if (Auth::check()) {
+                $unreadNotifications = Auth::user()->unreadNotifications()->latest()->limit(8)->get();
+                $unreadCount = Auth::user()->unreadNotifications()->count();
+            }
+            $view->with('unreadNotifications', $unreadNotifications);
+            $view->with('unreadCount', $unreadCount);
         });
     }
 }

@@ -11,3 +11,4 @@ Artisan::command('inspire', function () {
 Schedule::command('sessions:cleanup')->everyMinute()->withoutOverlapping();
 Schedule::command('app:check-router-health')->everyFiveMinutes()->withoutOverlapping();
 Schedule::command('mpesa:reconcile')->everyFiveMinutes()->withoutOverlapping();
+Schedule::command('notifications:send-expiry')->dailyAt('08:00')->withoutOverlapping();

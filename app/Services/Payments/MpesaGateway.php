@@ -18,22 +18,43 @@ class MpesaGateway implements PaymentGatewayInterface
     protected string $callbackUrl;
     protected string $env;
 
-    public function __construct(?\App\Models\Tenant $tenant = null)
+    public function __construct(?\App\Models\Tenant $tenant = null, ?\App\Models\Network $network = null)
     {
-        $this->consumerKey = config('services.mpesa.consumer_key', '');
+        // Master app credentials (always used for token + password generation)
+        $this->consumerKey    = config('services.mpesa.consumer_key', '');
         $this->consumerSecret = config('services.mpesa.consumer_secret', '');
-        $this->passkey = config('services.mpesa.passkey', '');
+        $this->passkey        = config('services.mpesa.passkey', '');
         $this->masterShortcode = config('services.mpesa.shortcode', '174379');
-        $this->env = config('services.mpesa.env', 'sandbox');
-        
-        // Target Till/Paybill is the Tenant's shortcode. 
-        // If not set, fallback to the master app shortcode.
-        if ($tenant && $tenant->mpesa_shortcode) {
+        $this->env            = config('services.mpesa.env', 'sandbox');
+        $this->callbackUrl    = config('services.mpesa.callback_url', '');
+
+        // Resolve PartyB (Till/Paybill) — priority:
+        // 1. Network-specific payout account
+        // 2. Tenant-level shortcode
+        // 3. Master shortcode fallback
+        $this->partyB = $this->masterShortcode;
+
+        if ($network) {
+            $payoutAccount = \App\Models\PayoutAccount::where('network_id', $network->id)
+                ->where('is_active', true)->first();
+            if ($payoutAccount && $payoutAccount->mpesa_shortcode) {
+                $this->partyB = $payoutAccount->mpesa_shortcode;
+                // Use network-specific Daraja creds if set
+                if ($payoutAccount->mpesa_consumer_key) {
+                    $this->consumerKey    = $payoutAccount->mpesa_consumer_key;
+                    $this->consumerSecret = $payoutAccount->mpesa_consumer_secret;
+                    $this->passkey        = $payoutAccount->mpesa_passkey;
+                    $this->masterShortcode = $payoutAccount->mpesa_shortcode;
+                }
+                if ($payoutAccount->mpesa_environment) {
+                    $this->env = $payoutAccount->mpesa_environment;
+                }
+            } elseif ($tenant && $tenant->mpesa_shortcode) {
+                $this->partyB = $tenant->mpesa_shortcode;
+            }
+        } elseif ($tenant && $tenant->mpesa_shortcode) {
             $this->partyB = $tenant->mpesa_shortcode;
-        } else {
-            $this->partyB = $this->masterShortcode;
         }
-        $this->callbackUrl = config('services.mpesa.callback_url', '');
     }
 
     /**

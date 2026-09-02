@@ -3,8 +3,65 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="description" content="Automate your MikroTik hotspot billing with direct M-Pesa integration. Keep 100% of your revenue. Start your free trial today.">
-    <title>goAfrica Connect — The Modern ISP Billing Engine for Africa</title>
+    <meta name="description" content="goAfrica Connect — The easiest way to automate your MikroTik hotspot billing. Direct M-Pesa STK push, captive portal, vouchers & real-time reports. Keep 100% of your revenue. Start free today.">
+    <meta name="keywords" content="ISP billing, MikroTik hotspot billing, M-Pesa hotspot, captive portal Kenya, hotspot management system, WiFi billing Kenya, internet billing system Africa, MikroTik STK push">
+    <meta name="author" content="goAfrica Connect">
+    <meta name="robots" content="index, follow">
+    <meta name="theme-color" content="#2563eb">
+
+    {{-- Open Graph / Facebook --}}
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://goafrica.site/">
+    <meta property="og:title" content="goAfrica Connect — MikroTik Hotspot Billing & M-Pesa Automation">
+    <meta property="og:description" content="Automate your WiFi hotspot business with direct M-Pesa integration. No commission. Unlimited customers. Setup in minutes.">
+    <meta property="og:image" content="https://goafrica.site/og-image.png">
+    <meta property="og:site_name" content="goAfrica Connect">
+    <meta property="og:locale" content="en_KE">
+
+    {{-- Twitter Card --}}
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@goafricaconnect">
+    <meta name="twitter:title" content="goAfrica Connect — MikroTik Hotspot Billing">
+    <meta name="twitter:description" content="Automate your WiFi hotspot with M-Pesa. No commission. Start free.">
+    <meta name="twitter:image" content="https://goafrica.site/og-image.png">
+
+    {{-- Canonical URL --}}
+    <link rel="canonical" href="https://goafrica.site/">
+
+    <title>goAfrica Connect — MikroTik Hotspot Billing & M-Pesa Automation for Africa</title>
+
+    {{-- Structured Data (JSON-LD) --}}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "goAfrica Connect",
+        "applicationCategory": "BusinessApplication",
+        "operatingSystem": "Web",
+        "description": "MikroTik hotspot billing platform with direct M-Pesa integration for African ISPs. Automate billing, manage customers, and keep 100% of revenue.",
+        "url": "https://goafrica.site",
+        "offers": {
+            "@type": "Offer",
+            "price": "500",
+            "priceCurrency": "KES",
+            "priceValidUntil": "2027-12-31",
+            "description": "Monthly subscription — unlimited routers, customers, and transactions"
+        },
+        "featureList": [
+            "M-Pesa STK Push Integration",
+            "MikroTik RouterOS API",
+            "Captive Portal",
+            "Voucher Generation",
+            "Customer CRM",
+            "Revenue Analytics"
+        ],
+        "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": "4.8",
+            "reviewCount": "12"
+        }
+    }
+    </script>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

@@ -13,6 +13,21 @@ Route::get('/', function () {
     return view('landing');
 })->name('landing');
 
+Route::get('/sitemap.xml', function () {
+    $content = '<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    <url><loc>https://goafrica.site/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
+    <url><loc>https://goafrica.site/register</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
+    <url><loc>https://goafrica.site/dashboard/login</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
+</urlset>';
+    return response($content, 200)->header('Content-Type', 'application/xml');
+});
+
+Route::get('/robots.txt', function () {
+    return response("User-agent: *\nAllow: /\nDisallow: /dashboard/\nDisallow: /super/\nDisallow: /connect/\nSitemap: https://goafrica.site/sitemap.xml\n", 200)
+        ->header('Content-Type', 'text/plain');
+});
+
 Route::get('/register', [RegistrationController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegistrationController::class, 'register']);
 
@@ -38,6 +53,11 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'super_admin']], fun
     Route::get('/', [SuperAdminController::class, 'index'])->name('super.index');
     Route::post('/tenants/{tenant}/extend', [SuperAdminController::class, 'extendSubscription'])->name('super.tenants.extend');
     Route::post('/tenants/{tenant}/suspend', [SuperAdminController::class, 'suspendTenant'])->name('super.tenants.suspend');
+    Route::post('/tenants/{tenant}/activate', [SuperAdminController::class, 'activateTenant'])->name('super.tenants.activate');
+    Route::post('/tenants/{tenant}/impersonate', [SuperAdminController::class, 'impersonate'])->name('super.tenants.impersonate');
+    Route::delete('/tenants/{tenant}', [SuperAdminController::class, 'deleteTenant'])->name('super.tenants.delete');
+    Route::get('/bulk-email', [SuperAdminController::class, 'bulkEmailForm'])->name('super.bulk-email');
+    Route::post('/bulk-email', [SuperAdminController::class, 'sendBulkEmail'])->name('super.bulk-email.send');
 });
 
 // Captive Portal Routes
@@ -64,6 +84,11 @@ Route::group(['prefix' => 'dashboard'], function () {
         Route::post('/cmd', [DashboardController::class, 'runCmd'])->name('dashboard.runCmd');
         Route::get('/docs', [App\Http\Controllers\Dashboard\DocumentationController::class, 'index'])->name('dashboard.docs');
         
+        // Notifications
+        Route::get('/notifications', [App\Http\Controllers\Dashboard\NotificationController::class, 'index'])->name('dashboard.notifications.index');
+        Route::post('/notifications/{id}/read', [App\Http\Controllers\Dashboard\NotificationController::class, 'markRead'])->name('dashboard.notifications.read');
+        Route::post('/notifications/read-all', [App\Http\Controllers\Dashboard\NotificationController::class, 'readAll'])->name('dashboard.notifications.readAll');
+
         // Reports
         Route::get('/reports', [App\Http\Controllers\Dashboard\ReportController::class, 'index'])->name('dashboard.reports.index');
         Route::get('/reports/export', [App\Http\Controllers\Dashboard\ReportController::class, 'export'])->name('dashboard.reports.export');
