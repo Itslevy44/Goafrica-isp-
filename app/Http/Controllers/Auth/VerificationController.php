@@ -12,9 +12,9 @@ use Carbon\Carbon;
 
 class VerificationController extends Controller
 {
-    /**
-     * Show the verification notice.
-     */
+    // -------------------------------------------------------------------------
+    // Show notice page for already-authenticated unverified users
+    // -------------------------------------------------------------------------
     public function show(Request $request)
     {
         if ($request->user() && $request->user()->hasVerifiedEmail()) {
@@ -24,35 +24,47 @@ class VerificationController extends Controller
         return view('auth.verify');
     }
 
-    /**
-     * Mark the authenticated user's email address as verified.
-     *
-     * This is a custom implementation that does NOT require the user to be
-     * already authenticated, so the link works when opened on any device
-     * (e.g. phone) that is not logged in.
-     */
+    // -------------------------------------------------------------------------
+    // Public pending page — shown when user is logged out but needs to verify.
+    // (Reached after a blocked login attempt)
+    // -------------------------------------------------------------------------
+    public function pending(Request $request)
+    {
+        // If already verified and authenticated, go to dashboard
+        if (Auth::check() && Auth::user()->hasVerifiedEmail()) {
+            return redirect()->route('dashboard.index');
+        }
+
+        return view('auth.verify-pending');
+    }
+
+    // -------------------------------------------------------------------------
+    // Verify the email — works WITHOUT being authenticated (works from any device)
+    // -------------------------------------------------------------------------
     public function verify(Request $request, $id, $hash)
     {
-        // Find the user by ID
+        // Find user by ID
         $user = User::findOrFail($id);
 
-        // Verify the signed URL is valid and belongs to this user
+        // Validate signed URL
         if (! URL::hasValidSignature($request)) {
-            abort(403, 'This verification link is invalid or has expired.');
+            return redirect()->route('dashboard.login')
+                ->withErrors(['email' => 'This verification link is invalid or has expired. Please log in and request a new one.']);
         }
 
-        // Check that the hash matches
+        // Verify hash matches email
         if (! hash_equals((string) $hash, sha1($user->getEmailForVerification()))) {
-            abort(403, 'This verification link is not valid for this account.');
+            return redirect()->route('dashboard.login')
+                ->withErrors(['email' => 'This verification link is not valid for this account.']);
         }
 
-        // Already verified - just redirect
+        // Already verified
         if ($user->hasVerifiedEmail()) {
-            // Log the user in if they aren't
             if (! Auth::check()) {
                 Auth::login($user);
             }
-            return redirect()->route('dashboard.index')->with('success', 'Your email was already verified. Welcome!');
+            return redirect()->route('dashboard.index')
+                ->with('success', '✅ Your email is already verified. Welcome back!');
         }
 
         // Mark as verified
@@ -61,16 +73,16 @@ class VerificationController extends Controller
 
         event(new Verified($user));
 
-        // Log the user in automatically so they land on the dashboard
+        // Auto-login so they land directly on the dashboard
         Auth::login($user);
 
         return redirect()->route('dashboard.index')
-                         ->with('success', '✅ Email verified successfully! Welcome to GoAfrica Connect.');
+            ->with('success', '✅ Email verified successfully! Welcome to GoAfrica Connect.');
     }
 
-    /**
-     * Resend the verification notification.
-     */
+    // -------------------------------------------------------------------------
+    // Resend verification email for authenticated users (from dashboard banner)
+    // -------------------------------------------------------------------------
     public function resend(Request $request)
     {
         if (! $request->user()) {
@@ -83,6 +95,33 @@ class VerificationController extends Controller
 
         $request->user()->sendEmailVerificationNotification();
 
-        return back()->with('message', 'A fresh verification link has been sent to your email.');
+        return back()->with('message', 'A fresh verification link has been sent to your email address.');
+    }
+
+    // -------------------------------------------------------------------------
+    // Resend verification email for unauthenticated users on the pending page.
+    // User enters their email address to receive a new link.
+    // -------------------------------------------------------------------------
+    public function resendPending(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+        ]);
+
+        $user = User::where('email', $request->email)->first();
+
+        if (! $user) {
+            // Don't reveal whether the email exists for security
+            return back()->with('message', 'If that email exists in our system, a verification link has been sent.');
+        }
+
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->route('dashboard.login')
+                ->with('success', 'Your email is already verified. Please log in.');
+        }
+
+        $user->sendEmailVerificationNotification();
+
+        return back()->with('message', 'Verification email sent to ' . $request->email . '. Please check your inbox and spam folder.');
     }
 }

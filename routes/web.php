@@ -25,9 +25,13 @@ Route::post('/reset-password', [App\Http\Controllers\Auth\PasswordResetControlle
 // Email Verification Routes
 // NOTE: verification.notice requires auth (user sees "please verify" page)
 Route::get('/email/verify', [App\Http\Controllers\Auth\VerificationController::class, 'show'])->middleware(['auth'])->name('verification.notice');
+// Public pending page shown after blocked login attempt (user is NOT authenticated)
+Route::get('/email/pending', [App\Http\Controllers\Auth\VerificationController::class, 'pending'])->name('verification.pending');
 // NOTE: verification.verify does NOT require auth so the link works from any device (phone, etc.)
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
 Route::post('/email/verification-notification', [App\Http\Controllers\Auth\VerificationController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
+// Public resend for unauthenticated pending page (user submits email to resend)
+Route::post('/email/resend-pending', [App\Http\Controllers\Auth\VerificationController::class, 'resendPending'])->middleware(['throttle:3,1'])->name('verification.resend.pending');
 
 // Super Admin Dashboard
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'super_admin']], function () {
