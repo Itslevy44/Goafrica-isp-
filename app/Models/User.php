@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use App\Models\Network;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -22,6 +23,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
     protected $fillable = [
         'tenant_id',
+        'network_id',
         'name',
         'email',
         'password',
@@ -57,5 +59,21 @@ class User extends Authenticatable implements MustVerifyEmail
     public function isSuperAdmin(): bool
     {
         return $this->role === 'super_admin' && is_null($this->tenant_id);
+    }
+
+    /**
+     * Check if the user is an admin within their tenant.
+     */
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    /**
+     * The network this staff member is assigned to (null = all networks).
+     */
+    public function network(): BelongsTo
+    {
+        return $this->belongsTo(Network::class);
     }
 }

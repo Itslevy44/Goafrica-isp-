@@ -2,9 +2,9 @@
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>goAfrica Connect — The Modern ISP Billing Engine for Africa</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <meta name="description" content="Automate your MikroTik hotspot billing with direct M-Pesa integration. Keep 100% of your revenue. Start your free trial today.">
+    <title>goAfrica Connect — The Modern ISP Billing Engine for Africa</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

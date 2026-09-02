@@ -87,7 +87,10 @@ Route::group(['prefix' => 'dashboard'], function () {
 
         // Settings
         Route::get('/settings', [App\Http\Controllers\Dashboard\SettingsController::class, 'index'])->name('dashboard.settings.index');
-        Route::post('/settings', [App\Http\Controllers\Dashboard\SettingsController::class, 'update'])->name('dashboard.settings.update');
+        Route::post('/settings/profile', [App\Http\Controllers\Dashboard\SettingsController::class, 'updateProfile'])->name('dashboard.settings.profile');
+        Route::post('/settings/staff', [App\Http\Controllers\Dashboard\SettingsController::class, 'storeStaff'])->name('dashboard.settings.staff.store');
+        Route::delete('/settings/staff/{user}', [App\Http\Controllers\Dashboard\SettingsController::class, 'destroyStaff'])->name('dashboard.settings.staff.destroy');
+        Route::put('/settings/staff/{user}', [App\Http\Controllers\Dashboard\SettingsController::class, 'updateStaff'])->name('dashboard.settings.staff.update');
 
         // Devices
         Route::get('/devices', [App\Http\Controllers\Dashboard\DeviceController::class, 'index'])->name('dashboard.devices.index');

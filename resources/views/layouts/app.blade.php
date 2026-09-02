@@ -2,16 +2,41 @@
 <html lang="en" class="h-full">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
     <title>{{ isset($currentTenant) && $currentTenant ? $currentTenant->name : 'GoAfrica Connect' }} — ISP Dashboard</title>
     <link rel="icon" type="image/png" href="/favicon.png">
     <link rel="shortcut icon" href="/favicon.ico">
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    screens: {
+                        'xs':  '375px',
+                        '3xl': '1920px',
+                        '4xl': '2560px',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; }
-        /* Prevent body scroll when mobile sidebar is open */
         body.sidebar-open { overflow: hidden; }
+
+        /* Fluid base font: comfortable from 360px phone to 4K TV */
+        html { font-size: clamp(13px, 1.1vw, 17px); }
+
+        /* On very large screens expand sidebar slightly */
+        @media (min-width: 1920px) {
+            #sidebar { width: 18rem; }
+            .sidebar-offset { margin-left: 18rem; }
+        }
+        @media (min-width: 2560px) {
+            #sidebar { width: 20rem; }
+            .sidebar-offset { margin-left: 20rem; }
+        }
     </style>
 </head>
 <body class="h-full text-slate-800 antialiased bg-slate-50">
@@ -177,12 +202,12 @@
      On desktop (md+): ml-64 pushes content right of the fixed sidebar.
      On mobile: pt-14 offsets content below the fixed top bar.
      ===================================================================== --}}
-<div class="md:ml-64 flex flex-col min-h-screen pt-14 md:pt-0">
+<div class="md:ml-64 sidebar-offset flex flex-col min-h-screen pt-14 md:pt-0">
 
     {{-- Sticky top header bar --}}
-    <header class="sticky top-0 z-20 bg-white border-b border-slate-200/80 px-4 md:px-6 py-3 flex items-center justify-between shadow-sm">
-        <div class="flex items-center gap-3 min-w-0 overflow-hidden">
-            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg text-xs font-semibold text-slate-600 whitespace-nowrap">
+    <header class="sticky top-0 z-20 bg-white border-b border-slate-200/80 px-3 xs:px-4 md:px-6 3xl:px-10 py-2.5 md:py-3 flex items-center justify-between shadow-sm">
+        <div class="flex items-center gap-2 xs:gap-3 min-w-0 overflow-hidden">
+            <div class="hidden md:flex items-center gap-2 px-3 py-1.5 bg-slate-100 rounded-lg text-xs 3xl:text-sm font-semibold text-slate-600 whitespace-nowrap">
                 <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping flex-shrink-0"></span>
                 <span class="w-2 h-2 rounded-full bg-emerald-500 -ml-3 flex-shrink-0"></span>
                 Auto-Billing Active
@@ -191,12 +216,12 @@
             @if($currentTenant && $currentTenant->subscription_ends_at)
                 @php $daysLeft = (int) now()->diffInDays($currentTenant->subscription_ends_at, false); @endphp
                 @if($daysLeft >= 0)
-                    <a href="{{ route('dashboard.subscribe.index') }}" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors whitespace-nowrap">
+                    <a href="{{ route('dashboard.subscribe.index') }}" class="inline-flex items-center gap-1.5 px-2 xs:px-2.5 py-1 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors whitespace-nowrap">
                         ⚡ {{ $daysLeft }}d Trial
                     </a>
                 @else
-                    <a href="{{ route('dashboard.subscribe.index') }}" class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-bold animate-pulse hover:bg-red-100 whitespace-nowrap">
-                        ⚠️ Expired — Renew KES 500
+                    <a href="{{ route('dashboard.subscribe.index') }}" class="inline-flex items-center gap-1.5 px-2 xs:px-2.5 py-1 bg-red-50 border border-red-200 text-red-700 rounded-lg text-xs font-bold animate-pulse hover:bg-red-100 whitespace-nowrap">
+                        ⚠️ <span class="hidden xs:inline">Expired —</span> Renew KES 500
                     </a>
                 @endif
             @endif
@@ -205,7 +230,7 @@
         <div class="flex items-center gap-2 flex-shrink-0">
             <a href="{{ route('portal.index', ['network_slug' => $currentTenant?->networks?->first()?->slug ?? 'default']) }}"
                target="_blank"
-               class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl transition-colors whitespace-nowrap">
+               class="hidden sm:inline-flex items-center gap-1.5 text-xs 3xl:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl transition-colors whitespace-nowrap">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 Test Portal
             </a>
@@ -213,7 +238,9 @@
     </header>
 
     {{-- Page content --}}
-    <main class="flex-1 p-4 md:p-8 max-w-7xl w-full mx-auto">
+    <main class="flex-1 p-3 xs:p-4 md:p-6 lg:p-8 3xl:p-12 4xl:p-16
+                 max-w-7xl 3xl:max-w-screen-2xl 4xl:max-w-[2400px]
+                 w-full mx-auto">
 
         {{-- Email verification reminder banner --}}
         @if(Auth::check() && !Auth::user()->isSuperAdmin() && !Auth::user()->hasVerifiedEmail())

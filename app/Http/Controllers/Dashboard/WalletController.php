@@ -46,7 +46,7 @@ class WalletController extends Controller
 
         PayoutAccount::create([
             'tenant_id'          => $tenant->id,
-            'country_code'       => $tenant->country ?? 'KE',
+            'country_code'       => strtoupper(substr($tenant->country ?? 'KE', 0, 2)),
             'method'             => $validated['method'],
             'account_identifier' => $validated['account_identifier'],
             'account_name'       => $validated['account_name'],
