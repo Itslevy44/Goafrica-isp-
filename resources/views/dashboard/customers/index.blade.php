@@ -52,18 +52,24 @@
                         @endif
                     </td>
                     <td class="py-3 px-6 text-right">
-                        <form action="{{ route('dashboard.customers.toggleBan', $customer->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to {{ $customer->is_banned ? 'unban' : 'ban' }} this customer?');">
-                            @csrf
-                            @if($customer->is_banned)
-                                <button type="submit" class="text-emerald-600 hover:text-emerald-900 font-medium text-sm transition-colors px-3 py-1 bg-emerald-50 hover:bg-emerald-100 rounded-md">
-                                    Unban
-                                </button>
-                            @else
-                                <button type="submit" class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors px-3 py-1 bg-red-50 hover:bg-red-100 rounded-md">
-                                    Ban User
-                                </button>
-                            @endif
-                        </form>
+                        <div class="flex items-center justify-end gap-2">
+                            <a href="{{ route('dashboard.customers.show', $customer->id) }}"
+                               class="text-blue-600 hover:text-blue-800 font-medium text-sm transition-colors px-3 py-1 bg-blue-50 hover:bg-blue-100 rounded-md">
+                                View
+                            </a>
+                            <form action="{{ route('dashboard.customers.toggleBan', $customer->id) }}" method="POST" class="inline-block" onsubmit="return confirm('Are you sure you want to {{ $customer->is_banned ? 'unban' : 'ban' }} this customer?');">
+                                @csrf
+                                @if($customer->is_banned)
+                                    <button type="submit" class="text-emerald-600 hover:text-emerald-900 font-medium text-sm transition-colors px-3 py-1 bg-emerald-50 hover:bg-emerald-100 rounded-md">
+                                        Unban
+                                    </button>
+                                @else
+                                    <button type="submit" class="text-red-600 hover:text-red-900 font-medium text-sm transition-colors px-3 py-1 bg-red-50 hover:bg-red-100 rounded-md">
+                                        Ban User
+                                    </button>
+                                @endif
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty

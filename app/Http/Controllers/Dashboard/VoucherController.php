@@ -12,20 +12,62 @@ use Illuminate\Support\Facades\Auth;
 
 class VoucherController extends Controller
 {
+    public function destroy(Voucher $voucher)
+    {
+        $tenant = app('currentTenant');
+        $network = Network::where('tenant_id', $tenant->id)->firstOrFail();
+
+        if ($voucher->network_id !== $network->id) {
+            abort(403);
+        }
+
+        if ($voucher->uses_count > 0) {
+            return back()->withErrors(['error' => 'Cannot delete a voucher that has been used.']);
+        }
+
+        $code = $voucher->code;
+        $voucher->delete();
+
+        return back()->with('success', "Voucher {$code} deleted.");
+    }
+
     public function index()
     {
-        $network = Network::first();
+        $tenant = app('currentTenant');
+        $network = Network::where('tenant_id', $tenant->id)->first();
         if (!$network) {
             return redirect()->route('dashboard.settings.index')->withErrors(['error' => 'Please set up your network settings first.']);
         }
 
         $vouchers = Voucher::where('network_id', $network->id)->latest()->get();
+
+        // Search / filter
+        $search = request('search');
+        $filterStatus = request('filter_status');
+
+        $query = Voucher::where('network_id', $network->id);
+
+        if ($search) {
+            $query->where('code', 'LIKE', "%{$search}%");
+        }
+
+        if ($filterStatus === 'unused') {
+            $query->where('uses_count', 0);
+        } elseif ($filterStatus === 'used') {
+            $query->whereColumn('uses_count', '>=', 'max_uses');
+        } elseif ($filterStatus === 'partial') {
+            $query->where('uses_count', '>', 0)->whereColumn('uses_count', '<', 'max_uses');
+        }
+
+        $vouchers = $query->latest()->paginate(50)->withQueryString();
+
         return view('dashboard.vouchers.index', compact('vouchers', 'network'));
     }
 
     public function store(Request $request)
     {
-        $network = Network::firstOrFail();
+        $tenant = app('currentTenant');
+        $network = Network::where('tenant_id', $tenant->id)->firstOrFail();
 
         $validated = $request->validate([
             'count' => 'required|integer|min:1|max:100',
@@ -58,7 +100,8 @@ class VoucherController extends Controller
 
     public function print(Request $request)
     {
-        $network = Network::firstOrFail();
+        $tenant = app('currentTenant');
+        $network = Network::where('tenant_id', $tenant->id)->firstOrFail();
         
         // Print the latest 50 unused vouchers (or could be filtered by request)
         $vouchers = Voucher::where('network_id', $network->id)

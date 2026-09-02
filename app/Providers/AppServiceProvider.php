@@ -32,9 +32,17 @@ class AppServiceProvider extends ServiceProvider
                 $tenant = app('currentTenant');
             }
 
-            // 2. Fall back to the authenticated user's tenant
+            // 2. Fall back: look up directly by authenticated user's tenant_id
+            // (avoids BelongsToTenant global scope which requires currentTenant already bound)
             if (!$tenant && Auth::check()) {
-                $tenant = Auth::user()?->tenant;
+                $tenantId = Auth::user()->tenant_id ?? null;
+                if ($tenantId) {
+                    $tenant = \App\Models\Tenant::find($tenantId);
+                    // Also bind it for the rest of the request
+                    if ($tenant) {
+                        app()->instance('currentTenant', $tenant);
+                    }
+                }
             }
 
             // Expose as both names so any blade template works regardless of name used

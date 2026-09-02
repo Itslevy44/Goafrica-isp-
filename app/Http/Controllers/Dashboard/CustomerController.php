@@ -11,6 +11,37 @@ use Illuminate\Support\Facades\Auth;
 
 class CustomerController extends Controller
 {
+    public function show(Customer $customer)
+    {
+        $tenant = app('currentTenant');
+
+        if ($customer->tenant_id !== $tenant->id) {
+            abort(403);
+        }
+
+        $sessions = InternetSession::where('customer_id', $customer->id)
+            ->with('device', 'network')
+            ->orderBy('started_at', 'desc')
+            ->paginate(15);
+
+        $transactions = \App\Models\Transaction::where('customer_id', $customer->id)
+            ->with('offer')
+            ->orderBy('created_at', 'desc')
+            ->paginate(15);
+
+        $totalSpent = \App\Models\Transaction::where('customer_id', $customer->id)
+            ->where('status', 'success')
+            ->sum('amount_minor') / 100;
+
+        $banEvents = \App\Models\SystemEvent::where('tenant_id', $tenant->id)
+            ->where('description', 'LIKE', "%{$customer->phone}%")
+            ->where('action', 'LIKE', '%Customer%')
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        return view('dashboard.customers.show', compact('customer', 'sessions', 'transactions', 'totalSpent', 'banEvents'));
+    }
+
     public function index()
     {
         $tenant = app('currentTenant');

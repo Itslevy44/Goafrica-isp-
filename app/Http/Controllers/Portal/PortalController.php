@@ -13,7 +13,10 @@ class PortalController extends Controller
     public function index(Request $request, $network_slug)
     {
         $network = Network::where('slug', $network_slug)->firstOrFail();
-        $offers = Offer::where('is_active', true)->orderBy('price_minor', 'asc')->get();
+        $offers = Offer::where('network_id', $network->id)
+            ->where('is_active', true)
+            ->orderBy('price_minor', 'asc')
+            ->get();
         
         $mac = $request->query('mac');
         $ip = $request->query('ip');

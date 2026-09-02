@@ -66,15 +66,29 @@ Route::group(['prefix' => 'dashboard'], function () {
         
         // Reports
         Route::get('/reports', [App\Http\Controllers\Dashboard\ReportController::class, 'index'])->name('dashboard.reports.index');
-        
+        Route::get('/reports/export', [App\Http\Controllers\Dashboard\ReportController::class, 'export'])->name('dashboard.reports.export');
+
+        // Receipts (Invoice / PDF download)
+        Route::get('/receipts/{transaction}', [App\Http\Controllers\Dashboard\ReceiptController::class, 'show'])->name('dashboard.receipts.show');
+
         // Customers
         Route::get('/customers', [App\Http\Controllers\Dashboard\CustomerController::class, 'index'])->name('dashboard.customers.index');
+        Route::get('/customers/{customer}', [App\Http\Controllers\Dashboard\CustomerController::class, 'show'])->name('dashboard.customers.show');
         Route::post('/customers/{customer}/toggle-ban', [App\Http\Controllers\Dashboard\CustomerController::class, 'toggleBan'])->name('dashboard.customers.toggleBan');
-        
+
+        // Active Sessions
+        Route::get('/sessions', [App\Http\Controllers\Dashboard\SessionController::class, 'index'])->name('dashboard.sessions.index');
+        Route::post('/sessions/{session}/kick', [App\Http\Controllers\Dashboard\SessionController::class, 'kick'])->name('dashboard.sessions.kick');
+
+        // Wallet & Payouts
+        Route::get('/wallet', [App\Http\Controllers\Dashboard\WalletController::class, 'index'])->name('dashboard.wallet.index');
+        Route::post('/wallet/payout', [App\Http\Controllers\Dashboard\WalletController::class, 'requestPayout'])->name('dashboard.wallet.payout');
+        Route::post('/wallet/payout-account', [App\Http\Controllers\Dashboard\WalletController::class, 'savePayoutAccount'])->name('dashboard.wallet.payout-account');
+
         // Settings
         Route::get('/settings', [App\Http\Controllers\Dashboard\SettingsController::class, 'index'])->name('dashboard.settings.index');
         Route::post('/settings', [App\Http\Controllers\Dashboard\SettingsController::class, 'update'])->name('dashboard.settings.update');
-        
+
         // Devices
         Route::get('/devices', [App\Http\Controllers\Dashboard\DeviceController::class, 'index'])->name('dashboard.devices.index');
         Route::post('/devices', [App\Http\Controllers\Dashboard\DeviceController::class, 'store'])->name('dashboard.devices.store');
@@ -87,11 +101,18 @@ Route::group(['prefix' => 'dashboard'], function () {
         Route::put('/offers/{offer}', [App\Http\Controllers\Dashboard\OfferController::class, 'update'])->name('dashboard.offers.update');
         Route::delete('/offers/{offer}', [App\Http\Controllers\Dashboard\OfferController::class, 'destroy'])->name('dashboard.offers.destroy');
         Route::post('/offers/{offer}/toggle', [App\Http\Controllers\Dashboard\OfferController::class, 'toggle'])->name('dashboard.offers.toggle');
-        
+
+        // Networks (Multiple networks per tenant)
+        Route::get('/networks', [App\Http\Controllers\Dashboard\NetworkController::class, 'index'])->name('dashboard.networks.index');
+        Route::post('/networks', [App\Http\Controllers\Dashboard\NetworkController::class, 'store'])->name('dashboard.networks.store');
+        Route::put('/networks/{network}', [App\Http\Controllers\Dashboard\NetworkController::class, 'update'])->name('dashboard.networks.update');
+        Route::delete('/networks/{network}', [App\Http\Controllers\Dashboard\NetworkController::class, 'destroy'])->name('dashboard.networks.destroy');
+
         // Vouchers
         Route::get('/vouchers', [App\Http\Controllers\Dashboard\VoucherController::class, 'index'])->name('dashboard.vouchers.index');
         Route::post('/vouchers', [App\Http\Controllers\Dashboard\VoucherController::class, 'store'])->name('dashboard.vouchers.store');
         Route::get('/vouchers/print', [App\Http\Controllers\Dashboard\VoucherController::class, 'print'])->name('dashboard.vouchers.print');
+        Route::delete('/vouchers/{voucher}', [App\Http\Controllers\Dashboard\VoucherController::class, 'destroy'])->name('dashboard.vouchers.destroy');
     });
 });
 
