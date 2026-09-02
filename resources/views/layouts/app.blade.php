@@ -318,12 +318,15 @@
                 </div>
             </div>
 
-            <a href="{{ route('portal.index', ['network_slug' => $currentTenant?->networks?->first()?->slug ?? '']) }}"
+            @php $portalSlug = $currentTenant?->networks?->first()?->slug ?? null; @endphp
+            @if($portalSlug)
+            <a href="{{ route('portal.index', ['network_slug' => $portalSlug]) }}"
                target="_blank"
-               class="hidden sm:inline-flex items-center gap-1.5 text-xs 3xl:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl transition-colors whitespace-nowrap {{ !$currentTenant?->networks?->first()?->slug ? 'opacity-40 pointer-events-none' : '' }}">
+               class="hidden sm:inline-flex items-center gap-1.5 text-xs 3xl:text-sm font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-2 rounded-xl transition-colors whitespace-nowrap">
                 <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
                 Test Portal
             </a>
+            @endif
         </div>
     </header>
 

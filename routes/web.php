@@ -14,18 +14,11 @@ Route::get('/', function () {
 })->name('landing');
 
 Route::get('/sitemap.xml', function () {
-    $content = '<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-    <url><loc>https://goafrica.site/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>
-    <url><loc>https://goafrica.site/register</loc><changefreq>monthly</changefreq><priority>0.9</priority></url>
-    <url><loc>https://goafrica.site/dashboard/login</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-</urlset>';
-    return response($content, 200)->header('Content-Type', 'application/xml');
+    return response()->file(public_path('sitemap.xml'), ['Content-Type' => 'application/xml']);
 });
 
 Route::get('/robots.txt', function () {
-    return response("User-agent: *\nAllow: /\nDisallow: /dashboard/\nDisallow: /super/\nDisallow: /connect/\nSitemap: https://goafrica.site/sitemap.xml\n", 200)
-        ->header('Content-Type', 'text/plain');
+    return response()->file(public_path('robots.txt'), ['Content-Type' => 'text/plain']);
 });
 
 Route::get('/register', [RegistrationController::class, 'showRegistrationForm'])->name('register');

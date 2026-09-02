@@ -1,2 +1,8 @@
 User-agent: *
-Disallow:
+Allow: /
+Disallow: /dashboard/
+Disallow: /super/
+Disallow: /connect/
+Disallow: /webhooks/
+
+Sitemap: https://goafrica.site/sitemap.xml
