@@ -13,7 +13,7 @@ class ReportController extends Controller
 {
     public function index(Request $request)
     {
-        $tenant = app('currentTenant');
+        $tenant = app('currentTenant') ?? auth()->user()->tenant;
 
         // Revenue Metrics
         $totalRevenue = Transaction::where('tenant_id', $tenant->id)
@@ -26,11 +26,44 @@ class ReportController extends Controller
             ->whereYear('created_at', now()->year)
             ->sum('amount_minor');
 
-        // Transactions Pagination
-        $transactions = Transaction::with(['offer', 'customer'])
-            ->where('tenant_id', $tenant->id)
-            ->orderBy('created_at', 'desc')
-            ->paginate(15);
+        // Build Transactions Query with Filters
+        $query = Transaction::with(['offer', 'customer'])
+            ->where('tenant_id', $tenant->id);
+
+        // Search Filter (Phone, Receipt, ID, MAC)
+        if ($request->filled('search')) {
+            $search = trim($request->search);
+            $query->where(function($q) use ($search) {
+                $q->where('id', $search)
+                  ->orWhere('gateway_ref', 'LIKE', "%{$search}%")
+                  ->orWhereHas('customer', function($cq) use ($search) {
+                      $cq->where('phone', 'LIKE', "%{$search}%")
+                         ->orWhere('mac_address', 'LIKE', "%{$search}%");
+                  })
+                  ->orWhereHas('offer', function($oq) use ($search) {
+                      $oq->where('name', 'LIKE', "%{$search}%");
+                  });
+            });
+        }
+
+        // Status Filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->status);
+        }
+
+        // Date Range Filters
+        if ($request->filled('date_from')) {
+            $query->whereDate('created_at', '>=', $request->date_from);
+        }
+        if ($request->filled('date_to')) {
+            $query->whereDate('created_at', '<=', $request->date_to);
+        }
+
+        // Filtered revenue sum
+        $filteredTotalMinor = (clone $query)->where('status', 'success')->sum('amount_minor');
+
+        // Paginate
+        $transactions = $query->orderBy('created_at', 'desc')->paginate(30)->withQueryString();
 
         // Top Selling Packages
         $topOffers = Transaction::where('tenant_id', $tenant->id)
@@ -54,7 +87,8 @@ class ReportController extends Controller
             'transactions', 
             'topOffers',
             'totalVouchers',
-            'usedVouchers'
+            'usedVouchers',
+            'filteredTotalMinor'
         ));
     }
 }

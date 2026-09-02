@@ -11,9 +11,12 @@ class OfferController extends Controller
 {
     public function index()
     {
-        $network = Network::first();
+        $tenant = app('currentTenant') ?? auth()->user()->tenant;
+        $network = Network::where('tenant_id', $tenant->id)->first();
+
         if (!$network) {
-            return redirect()->route('dashboard.settings.index')->withErrors(['error' => 'Please set up your network settings first.']);
+            return redirect()->route('dashboard.settings.index')
+                ->withErrors(['error' => 'Please set up your network settings first.']);
         }
 
         $offers = Offer::where('network_id', $network->id)->get();
@@ -22,21 +25,30 @@ class OfferController extends Controller
 
     public function store(Request $request)
     {
-        $network = Network::firstOrFail();
+        $tenant = app('currentTenant') ?? auth()->user()->tenant;
+        $network = Network::where('tenant_id', $tenant->id)->firstOrFail();
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'             => 'required|string|max:255',
             'duration_minutes' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'price'            => 'required|numeric|min:0',
+            'is_multi_device'  => 'nullable|boolean',
+            'max_devices'      => 'nullable|integer|min:2|max:50',
         ]);
 
+        $isMulti  = $request->boolean('is_multi_device');
+        $maxDevs  = $isMulti ? (int) ($validated['max_devices'] ?? 2) : 1;
+
         Offer::create([
-            'network_id' => $network->id,
-            'name' => $validated['name'],
+            'tenant_id'        => $tenant->id,
+            'network_id'       => $network->id,
+            'name'             => $validated['name'],
             'duration_minutes' => $validated['duration_minutes'],
-            'price_minor' => $validated['price'] * 100,
-            'currency' => $network->currency,
-            'is_active' => true,
+            'price_minor'      => (int) round($validated['price'] * 100),
+            'currency'         => $network->currency,
+            'is_active'        => true,
+            'is_multi_device'  => $isMulti,
+            'max_devices'      => $maxDevs,
         ]);
 
         return back()->with('success', 'Internet plan created successfully.');
@@ -45,15 +57,22 @@ class OfferController extends Controller
     public function update(Request $request, Offer $offer)
     {
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
+            'name'             => 'required|string|max:255',
             'duration_minutes' => 'required|integer|min:1',
-            'price' => 'required|numeric|min:0',
+            'price'            => 'required|numeric|min:0',
+            'is_multi_device'  => 'nullable|boolean',
+            'max_devices'      => 'nullable|integer|min:2|max:50',
         ]);
 
+        $isMulti = $request->boolean('is_multi_device');
+        $maxDevs = $isMulti ? (int) ($validated['max_devices'] ?? 2) : 1;
+
         $offer->update([
-            'name' => $validated['name'],
+            'name'             => $validated['name'],
             'duration_minutes' => $validated['duration_minutes'],
-            'price_minor' => $validated['price'] * 100,
+            'price_minor'      => (int) round($validated['price'] * 100),
+            'is_multi_device'  => $isMulti,
+            'max_devices'      => $maxDevs,
         ]);
 
         return back()->with('success', 'Internet plan updated successfully.');

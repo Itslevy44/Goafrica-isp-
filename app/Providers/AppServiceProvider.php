@@ -19,6 +19,12 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        \Illuminate\Support\Facades\View::composer('*', function ($view) {
+            $tenant = app()->has('currentTenant') ? app('currentTenant') : null;
+            if (!$tenant && \Illuminate\Support\Facades\Auth::check()) {
+                $tenant = \Illuminate\Support\Facades\Auth::user()->tenant;
+            }
+            $view->with('tenant', $tenant);
+        });
     }
 }

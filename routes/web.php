@@ -23,9 +23,11 @@ Route::get('/reset-password/{token}', [App\Http\Controllers\Auth\PasswordResetCo
 Route::post('/reset-password', [App\Http\Controllers\Auth\PasswordResetController::class, 'reset'])->name('password.update');
 
 // Email Verification Routes
-Route::get('/email/verify', [App\Http\Controllers\Auth\VerificationController::class, 'show'])->name('verification.notice');
+// NOTE: verification.notice requires auth (user sees "please verify" page)
+Route::get('/email/verify', [App\Http\Controllers\Auth\VerificationController::class, 'show'])->middleware(['auth'])->name('verification.notice');
+// NOTE: verification.verify does NOT require auth so the link works from any device (phone, etc.)
 Route::get('/email/verify/{id}/{hash}', [App\Http\Controllers\Auth\VerificationController::class, 'verify'])->middleware(['signed'])->name('verification.verify');
-Route::post('/email/verification-notification', [App\Http\Controllers\Auth\VerificationController::class, 'resend'])->middleware(['throttle:6,1'])->name('verification.send');
+Route::post('/email/verification-notification', [App\Http\Controllers\Auth\VerificationController::class, 'resend'])->middleware(['auth', 'throttle:6,1'])->name('verification.send');
 
 // Super Admin Dashboard
 Route::group(['prefix' => 'super', 'middleware' => ['auth', 'super_admin']], function () {

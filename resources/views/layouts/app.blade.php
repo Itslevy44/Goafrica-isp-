@@ -13,6 +13,9 @@
 </head>
 <body class="h-full text-slate-800 antialiased">
     @auth
+    @php
+        $currentTenant = $tenant ?? (Auth::check() ? Auth::user()->tenant : null);
+    @endphp
     <div class="min-h-full flex flex-col md:flex-row">
         <!-- Mobile Header -->
         <div class="md:hidden bg-slate-900 text-white flex items-center justify-between px-4 py-3 border-b border-slate-800">
@@ -20,7 +23,7 @@
                 <div class="w-9 h-9 bg-blue-600 rounded-xl flex items-center justify-center font-black text-white text-lg shadow-md">
                     G
                 </div>
-                <span class="font-bold text-sm tracking-tight truncate max-w-[180px]">{{ $tenant->name ?? 'GoAfrica Connect' }}</span>
+                <span class="font-bold text-sm tracking-tight truncate max-w-[180px]">{{ $currentTenant->name ?? 'GoAfrica Connect' }}</span>
             </div>
             <button id="mobile-menu-btn" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white focus:outline-none">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -39,7 +42,7 @@
                     </svg>
                 </div>
                 <div class="overflow-hidden">
-                    <h2 class="font-bold text-white text-sm tracking-tight truncate">{{ $tenant->name ?? 'GoAfrica Connect' }}</h2>
+                    <h2 class="font-bold text-white text-sm tracking-tight truncate">{{ $currentTenant->name ?? 'GoAfrica Connect' }}</h2>
                     <span class="text-[11px] text-blue-400 font-medium flex items-center gap-1.5 mt-0.5">
                         <span class="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
                         ISP Cloud Node
@@ -141,9 +144,9 @@
                         Auto-Billing Active
                     </div>
 
-                    @if($tenant && $tenant->subscription_ends_at)
+                    @if($currentTenant && $currentTenant->subscription_ends_at)
                         @php
-                            $daysLeft = (int) now()->diffInDays($tenant->subscription_ends_at, false);
+                            $daysLeft = (int) now()->diffInDays($currentTenant->subscription_ends_at, false);
                         @endphp
                         @if($daysLeft >= 0)
                             <a href="{{ route('dashboard.subscribe.index') }}" class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 bg-blue-50 border border-blue-200 text-blue-700 rounded-lg text-xs font-bold hover:bg-blue-100 transition-colors">
@@ -158,7 +161,7 @@
                 </div>
 
                 <div class="flex items-center gap-3">
-                    <a href="{{ route('portal.index', ['network_slug' => $tenant->networks->first()->slug ?? 'default']) }}" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl transition-colors">
+                    <a href="{{ route('portal.index', ['network_slug' => $currentTenant?->networks?->first()?->slug ?? 'default']) }}" target="_blank" class="hidden sm:inline-flex items-center gap-1.5 text-xs font-semibold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3.5 py-2 rounded-xl transition-colors">
                         <svg class="w-4 h-4 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
                         Test Captive Portal
                     </a>
