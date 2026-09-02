@@ -59,17 +59,3 @@ jobs:
             .github/**
             phpunit.xml
             README.md
-
-      - name: Clear Laravel caches via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.FTP_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          script: |
-            cd /home/goafbdaf/laravel-app
-            php artisan view:clear
-            php artisan route:clear
-            php artisan config:clear
-            php artisan cache:clear
