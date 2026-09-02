@@ -469,7 +469,7 @@ const observer = new IntersectionObserver((entries) => {
 
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// Sticky nav shadow
+// Sticky nav shadow shadow
 window.addEventListener('scroll', () => {
     document.getElementById('navbar').classList.toggle('shadow-md', window.scrollY > 20);
 });
