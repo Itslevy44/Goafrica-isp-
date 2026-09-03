@@ -61,7 +61,7 @@ class SubscriptionController extends Controller
                 'Password' => $password,
                 'Timestamp' => $timestamp,
                 'TransactionType' => 'CustomerPayBillOnline',
-                'Amount' => 3000,
+                'Amount' => 500,
                 'PartyA' => $phone,
                 'PartyB' => $shortCode,
                 'PhoneNumber' => $phone,
@@ -73,7 +73,7 @@ class SubscriptionController extends Controller
             $pushResponse = Http::withoutVerifying()->timeout(60)->withToken($token)->post($pushUrl, $payload);
 
             if ($pushResponse->successful()) {
-                return back()->with('success', 'STK Push sent to your phone! Please enter your PIN to complete the Ksh 3,000 subscription.');
+                return back()->with('success', 'STK Push sent to your phone! Please enter your M-Pesa PIN to complete the Ksh 500 subscription.');
             }
 
             Log::error('Subscription STK Push Failed', ['response' => $pushResponse->body()]);

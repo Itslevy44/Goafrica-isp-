@@ -78,13 +78,12 @@
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
                         Send Reply
                     </button>
-                    <form action="{{ route('super.tickets.destroy', $ticket->id) }}" method="POST"
-                          onsubmit="return confirm('Delete this ticket?')">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-4 py-2.5 rounded-xl text-sm border border-red-200 transition-colors">
-                            Delete
-                        </button>
-                    </form>
+                    {{-- Delete button outside the reply form to avoid nested form issue --}}
+                    <button type="button"
+                            onclick="document.getElementById('delete-form-{{ $ticket->id }}').submit()"
+                            class="bg-red-50 hover:bg-red-100 text-red-600 font-bold px-4 py-2.5 rounded-xl text-sm border border-red-200 transition-colors">
+                        Delete
+                    </button>
                 </div>
             </div>
             <p class="text-xs text-slate-400">
@@ -96,6 +95,15 @@
             </p>
         </form>
     </div>
+
+    {{-- Delete form lives OUTSIDE the reply form --}}
+    <form id="delete-form-{{ $ticket->id }}"
+          action="{{ route('super.tickets.destroy', $ticket->id) }}"
+          method="POST"
+          onsubmit="return confirm('Delete this ticket permanently?')"
+          class="hidden">
+        @csrf @method('DELETE')
+    </form>
 
 </div>
 @endsection
