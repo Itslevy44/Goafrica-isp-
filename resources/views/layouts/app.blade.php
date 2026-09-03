@@ -58,7 +58,7 @@
      ===================================================================== --}}
 <div class="md:hidden fixed top-0 left-0 right-0 z-50 bg-slate-900 text-white flex items-center justify-between px-4 py-3 shadow-md">
     <div class="flex items-center gap-2.5">
-        <div class="w-8 h-8 bg-blue-600 rounded-xl flex items-center justify-center font-black text-white shadow">G</div>
+        <img src="/favicon.png" alt="goAfrica" class="w-8 h-8 rounded-xl object-cover shadow">
         <span class="font-bold text-sm tracking-tight truncate max-w-[180px]">{{ $currentTenant?->name ?? 'GoAfrica Connect' }}</span>
     </div>
     <button id="mobile-menu-btn" class="p-2 rounded-lg bg-slate-800 text-slate-300 hover:text-white focus:outline-none transition-colors">
@@ -86,11 +86,7 @@
 
     {{-- Brand --}}
     <div class="flex-shrink-0 p-5 border-b border-slate-800/80 flex items-center gap-3">
-        <div class="w-10 h-10 bg-gradient-to-tr from-blue-600 to-indigo-500 rounded-xl flex items-center justify-center shadow-lg shadow-blue-500/20">
-            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.111 16.404a5.5 5.5 0 017.778 0M12 20h.01m-7.08-7.071c3.904-3.905 10.236-3.905 14.141 0M1.394 9.393c5.857-5.857 15.355-5.857 21.213 0"/>
-            </svg>
-        </div>
+        <img src="/favicon.png" alt="goAfrica Connect" class="w-10 h-10 rounded-xl object-cover shadow-lg flex-shrink-0">
         <div class="overflow-hidden">
             <h2 class="font-bold text-white text-sm tracking-tight truncate">{{ $currentTenant?->name ?? 'GoAfrica Connect' }}</h2>
             <span class="text-[11px] text-blue-400 font-medium flex items-center gap-1.5 mt-0.5">
@@ -110,6 +106,14 @@
             <a href="{{ route('super.bulk-email') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('super.bulk-email*') ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
                 <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
                 Bulk Email
+            </a>
+            <a href="{{ route('super.tickets.index') }}" class="flex items-center gap-3 px-3.5 py-2.5 rounded-xl text-sm font-medium transition-all {{ request()->routeIs('super.tickets*') ? 'bg-blue-600 text-white shadow-md' : 'text-slate-400 hover:text-white hover:bg-slate-800/60' }}">
+                <svg class="w-5 h-5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+                Support Tickets
+                @php $openTickets = \App\Models\SupportTicket::where('status', 'open')->count(); @endphp
+                @if($openTickets > 0)
+                <span class="ml-auto text-[10px] font-black bg-red-500 text-white px-1.5 py-0.5 rounded-full">{{ $openTickets }}</span>
+                @endif
             </a>
         @else
             <p class="text-[10px] font-bold uppercase tracking-wider text-slate-500 px-3 pt-1 pb-1">Operations</p>

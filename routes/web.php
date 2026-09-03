@@ -18,8 +18,17 @@ Route::get('/sitemap.xml', function () {
 });
 
 Route::get('/robots.txt', function () {
-    return response()->file(public_path('robots.txt'), ['Content-Type' => 'text/plain']);
+    $content = "User-agent: *\nAllow: /\nDisallow: /dashboard/\nDisallow: /super/\nDisallow: /connect/\nDisallow: /webhooks/\n\nSitemap: https://goafrica.site/sitemap.xml\n";
+    return response($content, 200)->header('Content-Type', 'text/plain');
 });
+
+Route::get('/google42d4598fe1c93dcd.html', function () {
+    return response('google-site-verification: google42d4598fe1c93dcd.html', 200)
+        ->header('Content-Type', 'text/html');
+});
+
+// Public support contact form
+Route::post('/contact', [App\Http\Controllers\SupportController::class, 'submit'])->name('contact.submit')->middleware('throttle:5,1');
 
 Route::get('/register', [RegistrationController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [RegistrationController::class, 'register']);
@@ -51,6 +60,11 @@ Route::group(['prefix' => 'super', 'middleware' => ['auth', 'super_admin']], fun
     Route::delete('/tenants/{tenant}', [SuperAdminController::class, 'deleteTenant'])->name('super.tenants.delete');
     Route::get('/bulk-email', [SuperAdminController::class, 'bulkEmailForm'])->name('super.bulk-email');
     Route::post('/bulk-email', [SuperAdminController::class, 'sendBulkEmail'])->name('super.bulk-email.send');
+    // Support Tickets
+    Route::get('/tickets', [App\Http\Controllers\SuperAdmin\SupportTicketController::class, 'index'])->name('super.tickets.index');
+    Route::get('/tickets/{ticket}', [App\Http\Controllers\SuperAdmin\SupportTicketController::class, 'show'])->name('super.tickets.show');
+    Route::post('/tickets/{ticket}/reply', [App\Http\Controllers\SuperAdmin\SupportTicketController::class, 'reply'])->name('super.tickets.reply');
+    Route::delete('/tickets/{ticket}', [App\Http\Controllers\SuperAdmin\SupportTicketController::class, 'destroy'])->name('super.tickets.destroy');
 });
 
 // Captive Portal Routes

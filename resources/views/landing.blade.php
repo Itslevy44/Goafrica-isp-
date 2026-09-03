@@ -1,19 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0">
-    <meta name="description" content="goAfrica Connect — The easiest way to automate your MikroTik hotspot billing. Direct M-Pesa STK push, captive portal, vouchers & real-time reports. Keep 100% of your revenue. Start free today.">
-    <meta name="keywords" content="ISP billing, MikroTik hotspot billing, M-Pesa hotspot, captive portal Kenya, hotspot management system, WiFi billing Kenya, internet billing system Africa, MikroTik STK push">
-    <meta name="author" content="goAfrica Connect">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>goAfrica Connect — MikroTik Hotspot Billing &amp; M-Pesa Automation for Africa</title>
+
+    {{-- SEO Meta Tags --}}
+    <meta name="description" content="goAfrica Connect is a MikroTik hotspot billing SaaS for African ISPs. Automate M-Pesa payments, manage vouchers, captive portals, and keep 100% of your revenue. Start free today.">
+    <meta name="keywords" content="MikroTik billing, hotspot billing Africa, M-Pesa ISP, captive portal Kenya, ISP billing system, RouterOS billing, Safaricom M-Pesa hotspot, goAfrica, internet service provider billing">
     <meta name="robots" content="index, follow">
     <meta name="theme-color" content="#2563eb">
+    <link rel="canonical" href="https://goafrica.site/">
 
-    {{-- Open Graph / Facebook --}}
+    {{-- Open Graph --}}
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://goafrica.site/">
-    <meta property="og:title" content="goAfrica Connect — MikroTik Hotspot Billing & M-Pesa Automation">
-    <meta property="og:description" content="Automate your WiFi hotspot business with direct M-Pesa integration. No commission. Unlimited customers. Setup in minutes.">
+    <meta property="og:title" content="goAfrica Connect — MikroTik Hotspot Billing &amp; M-Pesa Automation for Africa">
+    <meta property="og:description" content="Automate your ISP with M-Pesa payments, MikroTik provisioning, captive portals, and voucher management. Keep 100% of your revenue. Start free.">
     <meta property="og:image" content="https://goafrica.site/og-image.png">
     <meta property="og:site_name" content="goAfrica Connect">
     <meta property="og:locale" content="en_KE">
@@ -21,517 +24,972 @@
     {{-- Twitter Card --}}
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:site" content="@goafricaconnect">
-    <meta name="twitter:title" content="goAfrica Connect — MikroTik Hotspot Billing">
-    <meta name="twitter:description" content="Automate your WiFi hotspot with M-Pesa. No commission. Start free.">
+    <meta name="twitter:title" content="goAfrica Connect — MikroTik Hotspot Billing &amp; M-Pesa Automation for Africa">
+    <meta name="twitter:description" content="Automate your ISP with M-Pesa payments, MikroTik provisioning, captive portals, and voucher management. Keep 100% of your revenue.">
     <meta name="twitter:image" content="https://goafrica.site/og-image.png">
 
-    {{-- Canonical URL --}}
-    <link rel="canonical" href="https://goafrica.site/">
-
-    <title>goAfrica Connect — MikroTik Hotspot Billing & M-Pesa Automation for Africa</title>
-
-    {{-- Structured Data (JSON-LD) --}}
+    {{-- JSON-LD Structured Data --}}
     @verbatim
     <script type="application/ld+json">
     {
-        "@context": "https://schema.org",
-        "@type": "SoftwareApplication",
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "goAfrica Connect",
+      "url": "https://goafrica.site/",
+      "description": "MikroTik hotspot billing and M-Pesa automation SaaS platform for African ISPs.",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": {
+        "@type": "Offer",
+        "price": "500",
+        "priceCurrency": "KES",
+        "description": "Monthly subscription — 3-day free trial included"
+      },
+      "publisher": {
+        "@type": "Organization",
         "name": "goAfrica Connect",
-        "applicationCategory": "BusinessApplication",
-        "operatingSystem": "Web",
-        "description": "MikroTik hotspot billing platform with direct M-Pesa integration for African ISPs. Automate billing, manage customers, and keep 100% of revenue.",
-        "url": "https://goafrica.site",
-        "offers": {
-            "@type": "Offer",
-            "price": "500",
-            "priceCurrency": "KES",
-            "priceValidUntil": "2027-12-31",
-            "description": "Monthly subscription — unlimited routers, customers, and transactions"
-        },
-        "featureList": [
-            "M-Pesa STK Push Integration",
-            "MikroTik RouterOS API",
-            "Captive Portal",
-            "Voucher Generation",
-            "Customer CRM",
-            "Revenue Analytics"
-        ],
-        "aggregateRating": {
-            "@type": "AggregateRating",
-            "ratingValue": "4.8",
-            "reviewCount": "12"
+        "url": "https://goafrica.site/",
+        "logo": "https://goafrica.site/favicon.png",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+254748717099",
+          "contactType": "customer support",
+          "areaServed": "KE",
+          "availableLanguage": "English"
         }
+      }
     }
     </script>
     @endverbatim
-    <link rel="icon" type="image/png" href="/favicon.png">
+
+    {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Plus+Jakarta+Sans:wght@500;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    {{-- Tailwind CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
+                    screens: {
+                        'xs': '480px',
+                        '3xl': '1600px',
+                        '4xl': '1920px',
+                    },
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['"Plus Jakarta Sans"', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
+                        body: ['Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50:  '#eff6ff',
+                            100: '#dbeafe',
+                            200: '#bfdbfe',
+                            300: '#93c5fd',
+                            400: '#60a5fa',
+                            500: '#3b82f6',
+                            600: '#2563eb',
+                            700: '#1d4ed8',
+                            800: '#1e40af',
+                            900: '#1e3a8a',
+                        },
                     },
                     animation: {
-                        'blob': 'blob 8s infinite ease-in-out',
+                        'blob': 'blob 8s infinite',
                         'float': 'float 6s ease-in-out infinite',
-                        'fade-up': 'fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards',
                     },
                     keyframes: {
                         blob: {
-                            '0%,100%': { transform: 'translate(0,0) scale(1)' },
-                            '33%': { transform: 'translate(30px,-40px) scale(1.08)' },
-                            '66%': { transform: 'translate(-20px,20px) scale(0.94)' },
+                            '0%':   { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%':  { transform: 'translate(30px, -50px) scale(1.1)' },
+                            '66%':  { transform: 'translate(-20px, 20px) scale(0.9)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
                         },
                         float: {
-                            '0%,100%': { transform: 'translateY(0px)' },
-                            '50%': { transform: 'translateY(-12px)' },
+                            '0%, 100%': { transform: 'translateY(0px)' },
+                            '50%':      { transform: 'translateY(-10px)' },
                         },
-                        fadeUp: {
-                            '0%': { opacity: '0', transform: 'translateY(24px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' },
-                        }
-                    }
+                    },
                 }
             }
         }
     </script>
+
     <style>
-        :root { --blue: #2563eb; --sky: #0ea5e9; }
-        body { background: #f8fafc; font-family: 'Inter', sans-serif; }
+        html {
+            font-size: clamp(13px, 1.5vw, 18px);
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+        }
+        .animation-delay-2000 { animation-delay: 2s; }
+        .animation-delay-4000 { animation-delay: 4s; }
 
-        .glass-nav {
-            background: rgba(255,255,255,0.88);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid rgba(226,232,240,0.7);
+        /* Scroll reveal */
+        .reveal {
+            opacity: 0;
+            transform: translateY(28px);
+            transition: opacity 0.65s ease, transform 0.65s ease;
+        }
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
-        .hero-gradient {
-            background: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(37,99,235,0.12) 0%, transparent 60%),
-                        radial-gradient(ellipse 60% 40% at 80% 20%, rgba(14,165,233,0.08) 0%, transparent 50%);
+        /* Nav shadow on scroll */
+        #main-nav {
+            transition: box-shadow 0.3s ease, background-color 0.3s ease;
+        }
+        #main-nav.scrolled {
+            box-shadow: 0 4px 24px 0 rgba(30, 64, 175, 0.10);
+            background-color: rgba(255,255,255,0.98);
         }
 
+        /* Gradient text */
         .gradient-text {
-            background: linear-gradient(135deg, #0f172a 0%, #1e40af 60%, #0ea5e9 100%);
+            background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #0891b2 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
 
-        .card-hover {
+        /* Feature card hover */
+        .feature-card {
             transition: transform 0.25s ease, box-shadow 0.25s ease;
         }
-        .card-hover:hover {
+        .feature-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.12);
+            box-shadow: 0 20px 40px rgba(37, 99, 235, 0.12);
         }
 
-        .reveal { opacity: 0; }
-        .revealed { animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) forwards; }
-
-        .glow-btn {
-            box-shadow: 0 0 0 0 rgba(37,99,235,0.4);
-            transition: box-shadow 0.3s ease, transform 0.2s ease;
+        /* Chart bars */
+        .bar-animate {
+            animation: growUp 1.2s ease forwards;
+            transform-origin: bottom;
         }
-        .glow-btn:hover {
-            box-shadow: 0 8px 30px rgba(37,99,235,0.35);
-            transform: translateY(-1px);
+        @keyframes growUp {
+            from { transform: scaleY(0); }
+            to   { transform: scaleY(1); }
         }
 
-        .step-line::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            left: 100%;
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, #cbd5e1, transparent);
+        /* Mobile menu */
+        #mobile-menu {
+            transition: max-height 0.35s ease, opacity 0.35s ease;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
         }
-
-        @media (max-width: 768px) { .step-line::after { display: none; } }
+        #mobile-menu.open {
+            max-height: 500px;
+            opacity: 1;
+        }
     </style>
 </head>
-<body class="antialiased text-slate-800">
 
-<!-- ======================== NAV ======================== -->
-<nav class="fixed w-full z-50 glass-nav" id="navbar">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-        <div class="flex justify-between items-center h-18 py-4">
-            <!-- Logo -->
-            <a href="/" class="flex items-center gap-2.5">
-                <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-600 to-sky-500 flex items-center justify-center shadow-lg shadow-blue-500/25">
-                    <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                </div>
-                <span class="font-display font-bold text-xl text-slate-900 tracking-tight">goAfrica<span class="text-blue-600">.</span></span>
+<body class="bg-white text-gray-900 antialiased">
+
+<!-- ============================================================
+     NAVIGATION
+============================================================ -->
+<nav id="main-nav" class="fixed top-0 inset-x-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+
+            {{-- Logo --}}
+            <a href="/" class="flex items-center gap-2.5 flex-shrink-0">
+                <img src="/favicon.png" alt="goAfrica Connect logo" class="w-8 h-8 rounded-lg">
+                <span class="font-extrabold text-lg text-gray-900 tracking-tight">goAfrica <span class="gradient-text">Connect</span></span>
             </a>
 
-            <!-- Desktop Nav -->
-            <div class="hidden md:flex items-center gap-8">
-                <a href="#features" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Features</a>
-                <a href="#how-it-works" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">How It Works</a>
-                <a href="#pricing" class="text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Pricing</a>
+            {{-- Desktop Nav Links --}}
+            <div class="hidden md:flex items-center gap-7 text-sm font-medium text-gray-600">
+                <a href="#features"     class="hover:text-brand-600 transition-colors">Features</a>
+                <a href="#how-it-works" class="hover:text-brand-600 transition-colors">How It Works</a>
+                <a href="#pricing"      class="hover:text-brand-600 transition-colors">Pricing</a>
+                <a href="#contact"      class="hover:text-brand-600 transition-colors">Contact</a>
             </div>
 
-            <div class="flex items-center gap-3">
-                <a href="{{ route('login') }}" class="hidden md:inline text-sm font-semibold text-slate-600 hover:text-blue-600 transition-colors">Sign In</a>
-                <a href="{{ route('register') }}" class="glow-btn bg-blue-600 text-white px-5 py-2.5 rounded-full text-sm font-bold">
+            {{-- Desktop CTA --}}
+            <div class="hidden md:flex items-center gap-3">
+                <a href="{{ route('login') }}" class="text-sm font-semibold text-gray-700 hover:text-brand-600 transition-colors px-3 py-2">Sign In</a>
+                <a href="{{ route('register') }}" class="inline-flex items-center gap-1.5 bg-brand-600 hover:bg-brand-700 text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors shadow-md shadow-brand-200">
                     Start Free Trial
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
                 </a>
+            </div>
+
+            {{-- Mobile burger --}}
+            <button id="burger-btn" class="md:hidden p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors" aria-label="Toggle menu">
+                <svg id="icon-open"  class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+                <svg id="icon-close" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            </button>
+        </div>
+
+        {{-- Mobile Menu --}}
+        <div id="mobile-menu">
+            <div class="py-4 border-t border-gray-100 flex flex-col gap-1 text-sm font-medium">
+                <a href="#features"     class="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors">Features</a>
+                <a href="#how-it-works" class="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors">How It Works</a>
+                <a href="#pricing"      class="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors">Pricing</a>
+                <a href="#contact"      class="px-3 py-2.5 rounded-lg text-gray-700 hover:bg-gray-50 hover:text-brand-600 transition-colors">Contact</a>
+                <div class="mt-2 flex flex-col gap-2 px-3">
+                    <a href="{{ route('login') }}"    class="text-center py-2.5 rounded-xl border border-gray-200 text-gray-700 font-semibold hover:bg-gray-50 transition-colors">Sign In</a>
+                    <a href="{{ route('register') }}" class="text-center py-2.5 rounded-xl bg-brand-600 text-white font-semibold hover:bg-brand-700 transition-colors">Start Free Trial</a>
+                </div>
             </div>
         </div>
     </div>
 </nav>
 
-<!-- ======================== HERO ======================== -->
-<section class="hero-gradient relative pt-36 pb-24 lg:pt-52 lg:pb-36 overflow-hidden">
 
-    <!-- Background blobs -->
-    <div class="absolute top-20 left-1/4 w-80 h-80 bg-blue-400/15 rounded-full blur-3xl animate-blob pointer-events-none"></div>
-    <div class="absolute top-32 right-1/4 w-96 h-96 bg-sky-300/15 rounded-full blur-3xl animate-blob pointer-events-none" style="animation-delay:2s"></div>
-    <div class="absolute bottom-0 left-1/2 w-64 h-64 bg-indigo-400/10 rounded-full blur-3xl animate-blob pointer-events-none" style="animation-delay:4s"></div>
+<!-- ============================================================
+     HERO SECTION
+============================================================ -->
+<section class="relative pt-24 pb-20 md:pt-32 md:pb-28 overflow-hidden bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
 
-    <div class="max-w-5xl mx-auto px-5 lg:px-8 text-center relative z-10">
-
-        <!-- Pill badge -->
-        <div class="inline-flex items-center gap-2 bg-white border border-blue-200 text-blue-700 text-xs font-bold px-4 py-1.5 rounded-full shadow-sm mb-8 reveal">
-            <span class="flex h-2 w-2">
-                <span class="animate-ping absolute h-2 w-2 rounded-full bg-blue-400 opacity-75"></span>
-                <span class="relative h-2 w-2 rounded-full bg-blue-600"></span>
-            </span>
-            Now with Multi-Network & Payout Support
-        </div>
-
-        <h1 class="font-display text-5xl sm:text-6xl lg:text-8xl font-black tracking-tight mb-6 leading-[1.05] reveal" style="animation-delay:80ms">
-            <span class="gradient-text">Run your ISP.</span><br>
-            <span class="text-slate-900">Automate everything.</span>
-        </h1>
-
-        <p class="text-lg sm:text-xl text-slate-500 font-medium max-w-2xl mx-auto mb-10 reveal" style="animation-delay:160ms">
-            The complete billing platform for MikroTik hotspot operators. Direct M-Pesa STK, instant provisioning, vouchers, and a captive portal — all in one dashboard.
-        </p>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center reveal" style="animation-delay:240ms">
-            <a href="{{ route('register') }}" class="glow-btn bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-2xl font-bold text-base flex items-center justify-center gap-2 group transition-colors">
-                Deploy Your Network Free
-                <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-            </a>
-            <a href="#features" class="bg-white border border-slate-200 text-slate-700 hover:bg-slate-50 px-8 py-4 rounded-2xl font-semibold text-base flex items-center justify-center gap-2 shadow-sm transition-colors">
-                See the Features
-            </a>
-        </div>
-
-        <!-- Trust bar -->
-        <div class="mt-10 flex flex-wrap justify-center items-center gap-6 text-xs text-slate-400 font-semibold reveal" style="animation-delay:320ms">
-            <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> 3-Day Free Trial</span>
-            <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> 0% Commission</span>
-            <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> No credit card needed</span>
-            <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg> Setup in 5 minutes</span>
-        </div>
+    {{-- Animated blobs --}}
+    <div class="absolute inset-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-24 -left-20 w-96 h-96 bg-blue-300/30 rounded-full blur-3xl animate-blob"></div>
+        <div class="absolute top-1/3 -right-20 w-80 h-80 bg-violet-300/30 rounded-full blur-3xl animate-blob animation-delay-2000"></div>
+        <div class="absolute -bottom-20 left-1/3 w-72 h-72 bg-cyan-300/25 rounded-full blur-3xl animate-blob animation-delay-4000"></div>
     </div>
 
-    <!-- Dashboard mockup -->
-    <div class="max-w-5xl mx-auto mt-20 px-5 reveal animate-float" style="animation-delay:400ms">
-        <div class="relative bg-white rounded-2xl border border-slate-200 shadow-2xl shadow-slate-300/30 overflow-hidden">
-            <!-- Window chrome -->
-            <div class="h-9 bg-slate-100 border-b border-slate-200 flex items-center px-4 gap-1.5">
-                <div class="w-3 h-3 rounded-full bg-red-400"></div>
-                <div class="w-3 h-3 rounded-full bg-amber-400"></div>
-                <div class="w-3 h-3 rounded-full bg-emerald-400"></div>
-                <div class="flex-1 mx-4">
-                    <div class="h-4 w-48 bg-slate-200 rounded-full mx-auto"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-14 items-center">
+
+            {{-- Left copy --}}
+            <div class="text-center lg:text-left">
+
+                {{-- Badge --}}
+                <div class="inline-flex items-center gap-2 bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold px-3.5 py-1.5 rounded-full mb-6">
+                    <span class="relative flex h-2 w-2">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-500 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-brand-600"></span>
+                    </span>
+                    Now with Multi-Network &amp; Payout Support
+                </div>
+
+                {{-- H1 --}}
+                <h1 class="text-4xl xs:text-5xl md:text-6xl font-extrabold leading-[1.1] tracking-tight text-gray-900 mb-6">
+                    Run your ISP.<br>
+                    <span class="gradient-text">Automate everything.</span>
+                </h1>
+
+                {{-- Subtext --}}
+                <p class="text-base md:text-lg text-gray-600 leading-relaxed mb-8 max-w-xl mx-auto lg:mx-0">
+                    Connect your <strong class="text-gray-800">MikroTik / RouterOS</strong> router, collect payments via
+                    <strong class="text-gray-800">M-Pesa</strong>, and give customers a branded
+                    <strong class="text-gray-800">captive portal</strong> — all from one dashboard.
+                    Built for East African ISPs, no technical complexity required.
+                </p>
+
+                {{-- CTA Buttons --}}
+                <div class="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start mb-10">
+                    <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold px-6 py-3.5 rounded-2xl transition-all shadow-lg shadow-brand-300/40 text-sm md:text-base">
+                        🚀 Deploy Your Network Free
+                    </a>
+                    <a href="#features" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 active:scale-95 text-gray-800 font-semibold border border-gray-200 px-6 py-3.5 rounded-2xl transition-all text-sm md:text-base">
+                        See the Features
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+                    </a>
+                </div>
+
+                {{-- Trust bar --}}
+                <div class="flex flex-wrap gap-x-5 gap-y-2 justify-center lg:justify-start text-xs text-gray-500 font-medium">
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> 3-day free trial</span>
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> 0% commission on revenue</span>
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> No credit card needed</span>
+                    <span class="flex items-center gap-1.5"><svg class="w-4 h-4 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg> Setup in 5 minutes</span>
                 </div>
             </div>
-            <!-- UI skeleton -->
-            <div class="grid grid-cols-12 h-72 sm:h-96">
-                <div class="col-span-2 bg-slate-900 p-3 space-y-3">
-                    <div class="w-7 h-7 bg-blue-600 rounded-lg mb-5"></div>
-                    <div class="h-5 bg-slate-700 rounded w-full"></div>
-                    <div class="h-5 bg-blue-600 rounded w-full"></div>
-                    <div class="h-5 bg-slate-700 rounded w-5/6"></div>
-                    <div class="h-5 bg-slate-700 rounded w-4/5"></div>
-                    <div class="h-5 bg-slate-700 rounded w-5/6"></div>
-                    <div class="h-5 bg-slate-700 rounded w-3/4"></div>
-                </div>
-                <div class="col-span-10 bg-slate-50 p-5">
-                    <div class="grid grid-cols-3 gap-3 mb-4">
-                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
-                            <div class="h-2.5 w-16 bg-slate-200 rounded mb-2"></div>
-                            <div class="h-6 w-24 bg-blue-600 rounded"></div>
-                        </div>
-                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
-                            <div class="h-2.5 w-16 bg-slate-200 rounded mb-2"></div>
-                            <div class="h-6 w-20 bg-emerald-500 rounded"></div>
-                        </div>
-                        <div class="bg-white rounded-xl border border-slate-200 p-3 shadow-sm">
-                            <div class="h-2.5 w-16 bg-slate-200 rounded mb-2"></div>
-                            <div class="h-6 w-16 bg-slate-300 rounded"></div>
-                        </div>
+
+            {{-- Right: Dashboard UI Mockup --}}
+            <div class="hidden lg:block animate-float">
+                <div class="bg-white rounded-2xl shadow-2xl border border-gray-100 overflow-hidden">
+                    {{-- Mockup top bar --}}
+                    <div class="flex items-center gap-1.5 px-4 py-3 bg-gray-50 border-b border-gray-100">
+                        <span class="w-3 h-3 rounded-full bg-red-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-yellow-400"></span>
+                        <span class="w-3 h-3 rounded-full bg-green-400"></span>
+                        <div class="ml-3 flex-1 bg-gray-200 rounded-full h-4 max-w-xs"></div>
                     </div>
-                    <div class="bg-white rounded-xl border border-slate-200 p-4 mb-3">
-                        <!-- Chart bars -->
-                        <div class="flex items-end gap-2 h-20">
-                            @foreach([40,65,45,80,55,90,70] as $h)
-                            <div class="flex-1 bg-gradient-to-t from-blue-600 to-sky-400 rounded-t opacity-80" style="height:{{ $h }}%"></div>
-                            @endforeach
+
+                    {{-- Mockup body --}}
+                    <div class="p-5 space-y-4">
+                        {{-- Stat cards row --}}
+                        <div class="grid grid-cols-3 gap-3">
+                            <div class="bg-blue-50 rounded-xl p-3 text-center">
+                                <div class="text-xs text-blue-600 font-semibold mb-1">Revenue Today</div>
+                                <div class="text-lg font-extrabold text-blue-800">KES 4,820</div>
+                            </div>
+                            <div class="bg-green-50 rounded-xl p-3 text-center">
+                                <div class="text-xs text-green-600 font-semibold mb-1">Active Sessions</div>
+                                <div class="text-lg font-extrabold text-green-800">47</div>
+                            </div>
+                            <div class="bg-violet-50 rounded-xl p-3 text-center">
+                                <div class="text-xs text-violet-600 font-semibold mb-1">Vouchers Sold</div>
+                                <div class="text-lg font-extrabold text-violet-800">128</div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="space-y-2">
-                        <div class="h-7 bg-white border border-slate-100 rounded-lg shadow-sm"></div>
-                        <div class="h-7 bg-white border border-slate-100 rounded-lg shadow-sm"></div>
-                        <div class="h-7 bg-white border border-slate-100 rounded-lg shadow-sm"></div>
+
+                        {{-- Fake chart --}}
+                        <div class="bg-gray-50 rounded-xl p-4">
+                            <div class="text-xs font-semibold text-gray-500 mb-3">Weekly Transactions</div>
+                            <div class="flex items-end gap-2 h-20">
+                                <div class="flex-1 bg-brand-200 rounded-t-md bar-animate" style="height:45%;animation-delay:0.1s"></div>
+                                <div class="flex-1 bg-brand-300 rounded-t-md bar-animate" style="height:65%;animation-delay:0.2s"></div>
+                                <div class="flex-1 bg-brand-400 rounded-t-md bar-animate" style="height:50%;animation-delay:0.3s"></div>
+                                <div class="flex-1 bg-brand-500 rounded-t-md bar-animate" style="height:80%;animation-delay:0.4s"></div>
+                                <div class="flex-1 bg-brand-400 rounded-t-md bar-animate" style="height:60%;animation-delay:0.5s"></div>
+                                <div class="flex-1 bg-brand-600 rounded-t-md bar-animate" style="height:100%;animation-delay:0.6s"></div>
+                                <div class="flex-1 bg-brand-500 rounded-t-md bar-animate" style="height:75%;animation-delay:0.7s"></div>
+                            </div>
+                            <div class="flex gap-2 mt-2">
+                                @php $days = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']; @endphp
+                                @foreach($days as $d)
+                                    <div class="flex-1 text-center text-[10px] text-gray-400">{{ $d }}</div>
+                                @endforeach
+                            </div>
+                        </div>
+
+                        {{-- Recent transactions --}}
+                        <div>
+                            <div class="text-xs font-semibold text-gray-500 mb-2">Recent Transactions</div>
+                            <div class="space-y-2">
+                                <div class="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-full bg-green-100 flex items-center justify-center text-green-600 text-xs font-bold">M</div>
+                                        <div>
+                                            <div class="text-xs font-semibold text-gray-800">John Kamau</div>
+                                            <div class="text-[10px] text-gray-400">M-Pesa • 1hr Package</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-green-600">+KES 50</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 text-xs font-bold">A</div>
+                                        <div>
+                                            <div class="text-xs font-semibold text-gray-800">Amina Wanjiru</div>
+                                            <div class="text-[10px] text-gray-400">Voucher • Daily Package</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-green-600">+KES 100</span>
+                                </div>
+                                <div class="flex items-center justify-between bg-gray-50 rounded-lg px-3 py-2">
+                                    <div class="flex items-center gap-2">
+                                        <div class="w-7 h-7 rounded-full bg-violet-100 flex items-center justify-center text-violet-600 text-xs font-bold">P</div>
+                                        <div>
+                                            <div class="text-xs font-semibold text-gray-800">Peter Odhiambo</div>
+                                            <div class="text-[10px] text-gray-400">M-Pesa • Weekly Package</div>
+                                        </div>
+                                    </div>
+                                    <span class="text-xs font-bold text-green-600">+KES 300</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
-            <!-- Bottom fade -->
-            <div class="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-white/90 to-transparent pointer-events-none"></div>
+
         </div>
     </div>
 </section>
 
-<!-- ======================== LOGO CLOUD ======================== -->
-<div class="py-10 bg-white border-y border-slate-100">
-    <div class="max-w-4xl mx-auto px-5 text-center">
-        <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-6">Integrates Natively With</p>
-        <div class="flex flex-wrap justify-center items-center gap-10 sm:gap-16">
-            <span class="text-xl font-display font-bold text-slate-700 opacity-60">MikroTik</span>
-            <span class="text-xl font-display font-bold text-[#46b245] opacity-70">M-Pesa</span>
-            <span class="text-xl font-display font-bold text-slate-700 opacity-60">RouterOS</span>
-            <span class="text-xl font-display font-bold text-slate-700 opacity-60">Safaricom</span>
+
+<!-- ============================================================
+     LOGO CLOUD
+============================================================ -->
+<section class="py-10 bg-white border-b border-gray-100">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <p class="text-center text-xs font-semibold uppercase tracking-widest text-gray-400 mb-7">Powered by &amp; integrated with</p>
+        <div class="flex flex-wrap items-center justify-center gap-8 md:gap-14">
+
+            {{-- MikroTik --}}
+            <div class="flex items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                <svg class="w-8 h-8 text-blue-700" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#2563eb"/>
+                    <path d="M8 28V12l7 8 5-8 5 8 7-8v16" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="text-base font-bold text-gray-700">MikroTik</span>
+            </div>
+
+            {{-- M-Pesa --}}
+            <div class="flex items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect width="40" height="40" rx="8" fill="#40be49"/>
+                    <text x="5" y="27" font-size="14" font-weight="bold" fill="white" font-family="Arial">M-P</text>
+                </svg>
+                <span class="text-base font-bold text-gray-700">M-Pesa</span>
+            </div>
+
+            {{-- RouterOS --}}
+            <div class="flex items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                <svg class="w-8 h-8 text-gray-700" viewBox="0 0 40 40" fill="none">
+                    <rect width="40" height="40" rx="8" fill="#1f2937"/>
+                    <circle cx="20" cy="20" r="8" stroke="white" stroke-width="2"/>
+                    <path d="M20 8v4M20 28v4M8 20h4M28 20h4" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="text-base font-bold text-gray-700">RouterOS</span>
+            </div>
+
+            {{-- Safaricom --}}
+            <div class="flex items-center gap-2 grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all">
+                <svg class="w-8 h-8" viewBox="0 0 40 40" fill="none">
+                    <rect width="40" height="40" rx="8" fill="#40be49"/>
+                    <path d="M12 20c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                    <circle cx="20" cy="20" r="3" fill="white"/>
+                </svg>
+                <span class="text-base font-bold text-gray-700">Safaricom</span>
+            </div>
+
         </div>
     </div>
-</div>
+</section>
 
-<!-- ======================== FEATURES ======================== -->
-<section id="features" class="py-28 bg-slate-50">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
 
-        <div class="text-center mb-16 reveal">
-            <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">What's Included</p>
-            <h2 class="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">Everything your ISP needs.</h2>
-            <p class="text-lg text-slate-500 max-w-2xl mx-auto font-medium">One platform to handle billing, routing, customer management, and payouts. No third-party tools needed.</p>
+<!-- ============================================================
+     FEATURES SECTION
+============================================================ -->
+<section id="features" class="py-20 md:py-28 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        {{-- Section header --}}
+        <div class="text-center mb-14 reveal">
+            <span class="inline-block bg-brand-50 text-brand-700 text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-brand-100 mb-4">Everything you need</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Powerful features built for African ISPs</h2>
+            <p class="text-gray-500 max-w-2xl mx-auto">From instant M-Pesa provisioning to full revenue analytics — every tool you need to run a professional hotspot business.</p>
         </div>
 
-        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-5">
+        @php
+        $features = [
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/>',
+                'color' => 'bg-green-50 text-green-600',
+                'title' => 'Instant M-Pesa Provisioning',
+                'desc'  => 'Customer pays via M-Pesa STK push and is connected to your hotspot in under 5 seconds. Fully automated, zero manual work.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>',
+                'color' => 'bg-yellow-50 text-yellow-600',
+                'title' => 'Keep 100% of Revenue',
+                'desc'  => 'We charge a flat monthly fee, never a commission. Every shilling your customers pay goes directly to you.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/>',
+                'color' => 'bg-violet-50 text-violet-600',
+                'title' => 'Voucher &amp; Scratch Cards',
+                'desc'  => 'Generate bulk voucher codes and printable scratch cards for offline payment. Perfect for markets with limited M-Pesa penetration.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z"/>',
+                'color' => 'bg-blue-50 text-blue-600',
+                'title' => 'Multi-Network Support',
+                'desc'  => 'Manage multiple MikroTik routers and locations from a single dashboard. Scale from one hotspot to a city-wide network.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>',
+                'color' => 'bg-orange-50 text-orange-600',
+                'title' => 'Revenue Analytics &amp; CSV Export',
+                'desc'  => 'Visual charts showing daily, weekly, and monthly revenue. Export any report to CSV for your accounting software.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>',
+                'color' => 'bg-slate-50 text-slate-600',
+                'title' => 'Web Terminal',
+                'desc'  => 'Execute RouterOS commands directly from your browser without SSH. Diagnose issues and manage your router on the go.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/>',
+                'color' => 'bg-pink-50 text-pink-600',
+                'title' => 'Customer CRM',
+                'desc'  => 'Store customer profiles, session history, and contact details. Send notifications and track usage patterns per customer.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/>',
+                'color' => 'bg-teal-50 text-teal-600',
+                'title' => 'Wallet &amp; Payouts',
+                'desc'  => 'Revenue accumulates in your goAfrica wallet. Request M-Pesa payouts anytime — funds land in minutes.',
+            ],
+            [
+                'icon'  => '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>',
+                'color' => 'bg-indigo-50 text-indigo-600',
+                'title' => 'Receipt &amp; Invoice Download',
+                'desc'  => 'Every transaction generates a branded receipt. Customers can download PDF invoices; ISPs get full transaction records.',
+            ],
+        ];
+        @endphp
 
-            @php
-            $features = [
-                ['icon' => 'M13 10V3L4 14h7v7l9-11h-7z', 'color' => 'blue', 'title' => 'Instant M-Pesa Provisioning', 'desc' => 'Customer pays → STK push hits their phone → router grants access. All within seconds, fully automated.'],
-                ['icon' => 'M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.956 11.956 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z', 'color' => 'emerald', 'title' => 'Keep 100% of Revenue', 'desc' => 'Connect your own M-Pesa Till or Paybill. Money goes directly to you. We charge a flat monthly fee — nothing more.'],
-                ['icon' => 'M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z', 'color' => 'purple', 'title' => 'Voucher & Scratch Cards', 'desc' => 'Generate printable voucher batches for resellers. Supports both time and balance-based vouchers with usage limits.'],
-                ['icon' => 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6', 'color' => 'indigo', 'title' => 'Multi-Network Support', 'desc' => 'Manage multiple hotspot locations from one account. Each gets its own captive portal URL, offers, and router.'],
-                ['icon' => 'M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z', 'color' => 'orange', 'title' => 'Revenue Analytics & CSV Export', 'desc' => 'Filter transactions by date, status, or phone number. Export to CSV for your accountant with one click.'],
-                ['icon' => 'M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z', 'color' => 'rose', 'title' => 'Web Terminal', 'desc' => 'Run RouterOS commands directly from your browser. Full command log with device and timestamp — great for debugging.'],
-                ['icon' => 'M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z', 'color' => 'cyan', 'title' => 'Customer CRM', 'desc' => 'Full customer profiles with session history, spending, and ban control. View all active sessions and kick users remotely.'],
-                ['icon' => 'M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z', 'color' => 'teal', 'title' => 'Wallet & Payouts', 'desc' => 'Your earnings accumulate in a wallet. Request withdrawals to M-Pesa or bank at any time with full ledger history.'],
-                ['icon' => 'M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2', 'color' => 'amber', 'title' => 'Receipt & Invoice Download', 'desc' => 'Every successful transaction generates a branded receipt. Customers can print or save as PDF for their records.'],
-            ];
-            @endphp
-
-            @foreach($features as $i => $f)
-            @php
-            $colors = [
-                'blue'   => ['bg' => 'bg-blue-50',   'icon' => 'text-blue-600'],
-                'emerald'=> ['bg' => 'bg-emerald-50', 'icon' => 'text-emerald-600'],
-                'purple' => ['bg' => 'bg-purple-50',  'icon' => 'text-purple-600'],
-                'indigo' => ['bg' => 'bg-indigo-50',  'icon' => 'text-indigo-600'],
-                'orange' => ['bg' => 'bg-orange-50',  'icon' => 'text-orange-600'],
-                'rose'   => ['bg' => 'bg-rose-50',    'icon' => 'text-rose-600'],
-                'cyan'   => ['bg' => 'bg-cyan-50',    'icon' => 'text-cyan-600'],
-                'teal'   => ['bg' => 'bg-teal-50',    'icon' => 'text-teal-600'],
-                'amber'  => ['bg' => 'bg-amber-50',   'icon' => 'text-amber-600'],
-            ];
-            $c = $colors[$f['color']];
-            @endphp
-            <div class="bg-white rounded-2xl border border-slate-200 p-6 card-hover reveal" style="animation-delay: {{ $i * 60 }}ms">
-                <div class="w-11 h-11 {{ $c['bg'] }} {{ $c['icon'] }} rounded-xl flex items-center justify-center mb-4 shadow-sm">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="{{ $f['icon'] }}"/></svg>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            @foreach($features as $index => $feature)
+            <div class="feature-card reveal bg-white rounded-2xl border border-gray-100 p-6 shadow-sm" style="transition-delay: {{ $index * 60 }}ms">
+                <div class="inline-flex items-center justify-center w-11 h-11 rounded-xl {{ $feature['color'] }} mb-4">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">{!! $feature['icon'] !!}</svg>
                 </div>
-                <h3 class="font-display font-bold text-slate-900 text-base mb-2">{{ $f['title'] }}</h3>
-                <p class="text-slate-500 text-sm leading-relaxed">{{ $f['desc'] }}</p>
+                <h3 class="text-base font-bold text-gray-900 mb-2">{!! $feature['title'] !!}</h3>
+                <p class="text-sm text-gray-500 leading-relaxed">{{ $feature['desc'] }}</p>
             </div>
             @endforeach
-
         </div>
+
     </div>
 </section>
 
-<!-- ======================== HOW IT WORKS ======================== -->
-<section id="how-it-works" class="py-28 bg-white border-t border-slate-100">
-    <div class="max-w-5xl mx-auto px-5 lg:px-8">
 
-        <div class="text-center mb-16 reveal">
-            <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">Simple Setup</p>
-            <h2 class="font-display text-4xl font-black text-slate-900 tracking-tight mb-4">Up and running in minutes.</h2>
-            <p class="text-slate-500 font-medium max-w-xl mx-auto">No server setup. No complex configuration. Just sign up and connect.</p>
+<!-- ============================================================
+     HOW IT WORKS
+============================================================ -->
+<section id="how-it-works" class="py-20 md:py-28 bg-slate-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center mb-14 reveal">
+            <span class="inline-block bg-brand-50 text-brand-700 text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-brand-100 mb-4">Simple setup</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Up and running in 4 steps</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">No complicated configuration. No server setup. Just connect, configure, and collect payments.</p>
         </div>
 
-        <div class="grid md:grid-cols-4 gap-8">
-            @php
-            $steps = [
-                ['n'=>'01','title'=>'Create Account','desc'=>'Sign up with your ISP name and email. Your 3-day trial starts immediately.'],
-                ['n'=>'02','title'=>'Add Your Router','desc'=>'Enter your MikroTik IP, port, and credentials. We connect securely and instantly.'],
-                ['n'=>'03','title'=>'Set Up M-Pesa','desc'=>'Add your Safaricom Daraja API keys. Your Till or Paybill — your money.'],
-                ['n'=>'04','title'=>'Share Portal URL','desc'=>'Customers scan your WiFi, visit the captive portal, pay, and get instant access.'],
-            ];
-            @endphp
-            @foreach($steps as $i => $step)
-            <div class="text-center relative reveal" style="animation-delay: {{ $i * 100 }}ms">
-                <div class="w-14 h-14 bg-gradient-to-br from-blue-600 to-sky-500 text-white rounded-2xl flex items-center justify-center font-display font-black text-lg mx-auto mb-4 shadow-lg shadow-blue-500/25">
-                    {{ $step['n'] }}
-                </div>
-                <h3 class="font-display font-bold text-slate-900 mb-2">{{ $step['title'] }}</h3>
-                <p class="text-sm text-slate-500 leading-relaxed">{{ $step['desc'] }}</p>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
+        <div class="relative">
+            {{-- Connector line (desktop) --}}
+            <div class="hidden md:block absolute top-10 left-[calc(12.5%+1.25rem)] right-[calc(12.5%+1.25rem)] h-0.5 bg-gradient-to-r from-brand-200 via-brand-400 to-brand-200"></div>
 
-<!-- ======================== SOCIAL PROOF ======================== -->
-<section class="py-20 bg-slate-900 relative overflow-hidden">
-    <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top,rgba(37,99,235,0.15),transparent_60%)] pointer-events-none"></div>
-    <div class="max-w-5xl mx-auto px-5 lg:px-8 relative z-10">
-        <div class="grid md:grid-cols-3 gap-6">
-            @php
-            $stats = [
-                ['value'=>'KES 0','label'=>'Commission on your sales','sub'=>'100% of every payment goes directly to your M-Pesa'],
-                ['value'=>'< 5s','label'=>'Average provisioning time','sub'=>'From STK confirmation to live internet access'],
-                ['value'=>'KES 500','label'=>'Flat monthly fee','sub'=>'Unlimited routers, users, and transactions included'],
-            ];
-            @endphp
-            @foreach($stats as $stat)
-            <div class="text-center reveal">
-                <div class="font-display text-5xl font-black text-white mb-2">{{ $stat['value'] }}</div>
-                <div class="text-blue-400 font-bold text-sm mb-1">{{ $stat['label'] }}</div>
-                <div class="text-slate-400 text-xs">{{ $stat['sub'] }}</div>
-            </div>
-            @endforeach
-        </div>
-    </div>
-</section>
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
 
-<!-- ======================== PRICING ======================== -->
-<section id="pricing" class="py-28 bg-white">
-    <div class="max-w-4xl mx-auto px-5 lg:px-8 text-center">
-
-        <div class="reveal">
-            <p class="text-xs font-bold text-blue-600 uppercase tracking-widest mb-3">Simple Pricing</p>
-            <h2 class="font-display text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">One plan. Everything included.</h2>
-            <p class="text-slate-500 font-medium max-w-xl mx-auto mb-12">No setup fees. No revenue cuts. No surprises. Cancel anytime.</p>
-        </div>
-
-        <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-lg mx-auto reveal">
-            <!-- Card top gradient band -->
-            <div class="h-2 bg-gradient-to-r from-blue-600 to-sky-400"></div>
-            <div class="p-10">
-                <div class="inline-flex items-center gap-2 bg-blue-50 text-blue-700 text-xs font-bold px-3 py-1 rounded-full mb-6">
-                    🎉 3 Days Free — No Card Required
-                </div>
-                <div class="flex justify-center items-end gap-2 mb-2">
-                    <span class="font-display text-7xl font-black text-slate-900 leading-none">500</span>
-                    <div class="text-left mb-2">
-                        <div class="text-slate-600 font-bold">KES</div>
-                        <div class="text-slate-400 text-sm">/ month</div>
+                {{-- Step 1 --}}
+                <div class="reveal text-center" style="transition-delay:0ms">
+                    <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-brand-600 text-white shadow-lg shadow-brand-300/40 mb-5 mx-auto">
+                        <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>
+                        <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white text-brand-700 text-xs font-extrabold flex items-center justify-center shadow">1</span>
                     </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">Create Account</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Sign up in under a minute. No credit card required — your 3-day trial starts immediately.</p>
                 </div>
-                <p class="text-slate-400 text-sm mb-8">After your free trial. Billed monthly.</p>
 
-                <ul class="space-y-3.5 mb-8 text-left">
+                {{-- Step 2 --}}
+                <div class="reveal text-center" style="transition-delay:100ms">
+                    <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-violet-600 text-white shadow-lg shadow-violet-300/40 mb-5 mx-auto">
+                        <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18"/></svg>
+                        <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white text-violet-700 text-xs font-extrabold flex items-center justify-center shadow">2</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">Add Your Router</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Enter your MikroTik router's IP, API port, and credentials. We connect and verify instantly.</p>
+                </div>
+
+                {{-- Step 3 --}}
+                <div class="reveal text-center" style="transition-delay:200ms">
+                    <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-green-600 text-white shadow-lg shadow-green-300/40 mb-5 mx-auto">
+                        <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"/></svg>
+                        <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white text-green-700 text-xs font-extrabold flex items-center justify-center shadow">3</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">Set Up M-Pesa</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Link your Safaricom Daraja API credentials and configure your STK push shortcode. Done in 2 minutes.</p>
+                </div>
+
+                {{-- Step 4 --}}
+                <div class="reveal text-center" style="transition-delay:300ms">
+                    <div class="relative inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-orange-500 text-white shadow-lg shadow-orange-300/40 mb-5 mx-auto">
+                        <svg class="w-9 h-9" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z"/></svg>
+                        <span class="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-white text-orange-700 text-xs font-extrabold flex items-center justify-center shadow">4</span>
+                    </div>
+                    <h3 class="text-base font-bold text-gray-900 mb-2">Share Portal URL</h3>
+                    <p class="text-sm text-gray-500 leading-relaxed">Share your branded captive portal link. Customers land, choose a package, pay via M-Pesa, and connect.</p>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</section>
+
+
+<!-- ============================================================
+     STATS BANNER
+============================================================ -->
+<section class="py-14 bg-gray-900">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-8 text-center">
+
+            <div class="reveal">
+                <div class="text-4xl md:text-5xl font-extrabold text-white mb-2">KES 0</div>
+                <div class="text-sm text-gray-400 font-medium">Commission on your revenue</div>
+                <div class="text-xs text-gray-500 mt-1">We never take a cut — you keep everything</div>
+            </div>
+
+            <div class="reveal" style="transition-delay:100ms">
+                <div class="text-4xl md:text-5xl font-extrabold text-brand-400 mb-2">&lt; 5s</div>
+                <div class="text-sm text-gray-400 font-medium">Average provisioning time</div>
+                <div class="text-xs text-gray-500 mt-1">From M-Pesa payment to internet access</div>
+            </div>
+
+            <div class="reveal" style="transition-delay:200ms">
+                <div class="text-4xl md:text-5xl font-extrabold text-white mb-2">KES 500</div>
+                <div class="text-sm text-gray-400 font-medium">Flat monthly subscription</div>
+                <div class="text-xs text-gray-500 mt-1">Unlimited routers, sessions &amp; customers</div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     PRICING SECTION
+============================================================ -->
+<section id="pricing" class="py-20 md:py-28 bg-white">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center mb-12 reveal">
+            <span class="inline-block bg-brand-50 text-brand-700 text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-brand-100 mb-4">Simple pricing</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">One plan. Everything included.</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">No hidden fees, no per-transaction cuts, no feature tiers. Just one honest flat rate.</p>
+        </div>
+
+        <div class="reveal max-w-md mx-auto">
+            <div class="relative bg-gradient-to-br from-brand-600 to-brand-800 rounded-3xl p-8 shadow-2xl shadow-brand-300/30 text-white overflow-hidden">
+
+                {{-- Background decoration --}}
+                <div class="absolute top-0 right-0 w-48 h-48 bg-white/5 rounded-full -translate-y-1/2 translate-x-1/2 pointer-events-none"></div>
+                <div class="absolute bottom-0 left-0 w-32 h-32 bg-white/5 rounded-full translate-y-1/2 -translate-x-1/2 pointer-events-none"></div>
+
+                {{-- Free trial badge --}}
+                <div class="absolute top-5 right-5">
+                    <span class="inline-flex items-center gap-1 bg-yellow-400 text-yellow-900 text-xs font-extrabold px-3 py-1 rounded-full shadow">
+                        ⚡ 3-Day Free Trial
+                    </span>
+                </div>
+
+                {{-- Plan name --}}
+                <div class="mb-6">
+                    <div class="text-sm font-semibold text-brand-200 uppercase tracking-widest mb-1">Pro Plan</div>
+                    <div class="flex items-end gap-1">
+                        <span class="text-5xl font-extrabold">500</span>
+                        <span class="text-xl font-bold text-brand-200 mb-1.5">KES</span>
+                        <span class="text-brand-200 text-sm mb-1.5">/ month</span>
+                    </div>
+                    <p class="text-brand-200 text-sm mt-2">Everything you need to run a professional ISP business.</p>
+                </div>
+
+                {{-- Feature checklist --}}
+                <ul class="space-y-3 mb-8">
                     @php
-                    $perks = [
-                        'Unlimited MikroTik Routers',
-                        'Unlimited Connected Customers',
-                        'Multiple Hotspot Networks',
-                        'Direct M-Pesa STK Integration',
-                        '100% Revenue — Zero Commission',
-                        'Customer CRM & Session Management',
-                        'Voucher Generation & Printing',
-                        'CSV Reports & PDF Receipts',
-                        'Wallet & Payout System',
-                        'Web Terminal for RouterOS',
-                        'Email & Priority Support',
+                    $planFeatures = [
+                        'Unlimited MikroTik routers',
+                        'Unlimited customer sessions',
+                        'M-Pesa STK Push integration',
+                        'Branded captive portal',
+                        'Voucher &amp; scratch card generator',
+                        'Revenue analytics &amp; CSV export',
+                        'Customer CRM &amp; profiles',
+                        'Wallet &amp; M-Pesa payouts',
+                        'PDF receipts &amp; invoices',
+                        'Web terminal (RouterOS CLI)',
+                        'Email &amp; dashboard notifications',
                     ];
                     @endphp
-                    @foreach($perks as $perk)
-                    <li class="flex items-center gap-3 text-sm font-medium text-slate-700">
-                        <div class="w-5 h-5 bg-emerald-100 text-emerald-600 rounded-full flex items-center justify-center flex-shrink-0">
-                            <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7"/></svg>
-                        </div>
-                        {{ $perk }}
+                    @foreach($planFeatures as $item)
+                    <li class="flex items-center gap-3 text-sm">
+                        <svg class="w-5 h-5 text-green-400 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        {!! $item !!}
                     </li>
                     @endforeach
                 </ul>
 
-                <a href="{{ route('register') }}" class="glow-btn block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-2xl text-base text-center transition-colors">
+                {{-- CTA --}}
+                <a href="{{ route('register') }}" class="block text-center bg-white hover:bg-gray-50 active:scale-95 text-brand-700 font-extrabold text-base py-4 rounded-2xl transition-all shadow-lg">
                     Start My Free Trial →
                 </a>
-                <p class="text-slate-400 text-xs mt-4">No credit card required. Upgrade anytime via M-Pesa.</p>
+                <p class="text-center text-xs text-brand-200 mt-3">No credit card required · Cancel anytime</p>
+
             </div>
         </div>
+
     </div>
 </section>
 
-<!-- ======================== CTA BANNER ======================== -->
-<section class="py-20 bg-gradient-to-br from-blue-700 via-blue-600 to-sky-500 relative overflow-hidden">
-    <div class="absolute inset-0 pointer-events-none">
-        <div class="absolute -top-20 -right-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-        <div class="absolute -bottom-20 -left-20 w-80 h-80 bg-white/10 rounded-full blur-3xl"></div>
-    </div>
-    <div class="max-w-3xl mx-auto px-5 text-center relative z-10 reveal">
-        <h2 class="font-display text-4xl sm:text-5xl font-black text-white mb-5 tracking-tight">Ready to automate your hotspot?</h2>
-        <p class="text-blue-100 text-lg font-medium mb-8">Join ISP operators across Africa using goAfrica Connect to run their networks on autopilot.</p>
-        <a href="{{ route('register') }}" class="inline-flex items-center gap-2 bg-white text-blue-700 hover:bg-blue-50 px-8 py-4 rounded-2xl font-bold text-base shadow-xl transition-colors group">
-            Get Started Free
-            <svg class="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
-        </a>
-    </div>
-</section>
 
-<!-- ======================== FOOTER ======================== -->
-<footer class="bg-slate-900 text-slate-400 py-12">
-    <div class="max-w-7xl mx-auto px-5 lg:px-8">
-        <div class="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 bg-gradient-to-br from-blue-600 to-sky-500 rounded-lg flex items-center justify-center">
-                    <svg class="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+<!-- ============================================================
+     CONTACT SECTION
+============================================================ -->
+<section id="contact" class="py-20 md:py-28 bg-slate-50">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="text-center mb-14 reveal">
+            <span class="inline-block bg-brand-50 text-brand-700 text-xs font-semibold uppercase tracking-widest px-3.5 py-1.5 rounded-full border border-brand-100 mb-4">Get in touch</span>
+            <h2 class="text-3xl md:text-4xl font-extrabold text-gray-900 mb-4">Contact Us</h2>
+            <p class="text-gray-500 max-w-xl mx-auto">Have a question, need technical help, or want a demo? Reach out — we're based in Kenya and respond fast.</p>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-10">
+
+            {{-- Left: contact info --}}
+            <div class="space-y-5 reveal">
+
+                {{-- Phone --}}
+                <div class="flex items-start gap-4 bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-green-50 text-green-600 flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Phone / WhatsApp</div>
+                        <a href="tel:+254748717099" class="text-base font-bold text-gray-900 hover:text-brand-600 transition-colors">+254 748 717 099</a>
+                        <p class="text-sm text-gray-500 mt-0.5">Available Mon–Sat, 8am–8pm EAT</p>
+                    </div>
                 </div>
-                <span class="font-display font-bold text-white text-lg">goAfrica Connect</span>
+
+                {{-- Email --}}
+                <div class="flex items-start gap-4 bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Email</div>
+                        <a href="mailto:support@goafrica.site" class="block text-base font-bold text-gray-900 hover:text-brand-600 transition-colors">support@goafrica.site</a>
+                        <a href="mailto:noreply@goafrica.site" class="block text-sm text-gray-500 hover:text-brand-600 transition-colors mt-0.5">noreply@goafrica.site</a>
+                    </div>
+                </div>
+
+                {{-- Location --}}
+                <div class="flex items-start gap-4 bg-white rounded-2xl border border-gray-100 p-5 shadow-sm">
+                    <div class="flex-shrink-0 w-11 h-11 rounded-xl bg-orange-50 text-orange-600 flex items-center justify-center">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+                    </div>
+                    <div>
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">Location</div>
+                        <div class="text-base font-bold text-gray-900">Based in Kenya</div>
+                        <p class="text-sm text-gray-500 mt-0.5">Serving East Africa &amp; beyond</p>
+                    </div>
+                </div>
+
+                {{-- Dashboard note --}}
+                <div class="flex items-start gap-3 bg-brand-50 rounded-2xl border border-brand-100 p-4">
+                    <svg class="w-5 h-5 text-brand-600 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                    <p class="text-sm text-brand-700">Registered ISPs will also receive a reply notification in their dashboard.</p>
+                </div>
+
             </div>
-            <div class="flex gap-8 text-sm font-semibold">
-                <a href="#features" class="hover:text-white transition-colors">Features</a>
-                <a href="#pricing" class="hover:text-white transition-colors">Pricing</a>
-                <a href="{{ route('login') }}" class="hover:text-white transition-colors">Sign In</a>
-                <a href="{{ route('register') }}" class="text-blue-400 hover:text-blue-300 transition-colors">Register</a>
+
+            {{-- Right: contact form --}}
+            <div class="reveal" style="transition-delay:100ms">
+                <div class="bg-white rounded-2xl border border-gray-100 p-7 shadow-sm">
+
+                    {{-- Success message --}}
+                    @if(session('contact_success'))
+                    <div class="flex items-center gap-3 bg-green-50 border border-green-200 text-green-800 rounded-xl p-4 mb-6">
+                        <svg class="w-5 h-5 text-green-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                        <span class="text-sm font-medium">{{ session('contact_success') }}</span>
+                    </div>
+                    @endif
+
+                    {{-- Error message --}}
+                    @if($errors->any())
+                    <div class="flex items-center gap-3 bg-red-50 border border-red-200 text-red-800 rounded-xl p-4 mb-6">
+                        <svg class="w-5 h-5 text-red-500 flex-shrink-0" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>
+                        <span class="text-sm font-medium">{{ $errors->first() }}</span>
+                    </div>
+                    @endif
+
+                    <form action="{{ route('contact.submit') }}" method="POST" class="space-y-5">
+                        @csrf
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5" for="contact_name">Your Name <span class="text-red-500">*</span></label>
+                                <input
+                                    type="text"
+                                    id="contact_name"
+                                    name="name"
+                                    required
+                                    placeholder="e.g. John Kamau"
+                                    value="{{ old('name') }}"
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder-gray-400 transition-shadow"
+                                >
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-gray-600 mb-1.5" for="contact_email">Email Address <span class="text-red-500">*</span></label>
+                                <input
+                                    type="email"
+                                    id="contact_email"
+                                    name="email"
+                                    required
+                                    placeholder="you@example.com"
+                                    value="{{ old('email') }}"
+                                    class="w-full text-sm border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder-gray-400 transition-shadow"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5" for="contact_subject">Subject <span class="text-red-500">*</span></label>
+                            <input
+                                type="text"
+                                id="contact_subject"
+                                name="subject"
+                                required
+                                placeholder="e.g. Integration help, billing question..."
+                                value="{{ old('subject') }}"
+                                class="w-full text-sm border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder-gray-400 transition-shadow"
+                            >
+                        </div>
+
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-600 mb-1.5" for="contact_message">Message <span class="text-red-500">*</span></label>
+                            <textarea
+                                id="contact_message"
+                                name="message"
+                                required
+                                rows="5"
+                                placeholder="Tell us how we can help..."
+                                class="w-full text-sm border border-gray-200 rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent placeholder-gray-400 resize-none transition-shadow"
+                            >{{ old('message') }}</textarea>
+                        </div>
+
+                        <button type="submit" class="w-full bg-brand-600 hover:bg-brand-700 active:scale-95 text-white font-bold py-3.5 rounded-xl transition-all shadow-md shadow-brand-200 text-sm">
+                            Send Message →
+                        </button>
+                    </form>
+
+                </div>
             </div>
-            <p class="text-xs">© {{ date('Y') }} goAfrica Connect. Powering Africa's ISPs.</p>
+
         </div>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     CTA BANNER
+============================================================ -->
+<section class="py-20 bg-gradient-to-br from-brand-600 via-brand-700 to-indigo-700 relative overflow-hidden">
+    {{-- Decorations --}}
+    <div class="absolute inset-0 pointer-events-none overflow-hidden">
+        <div class="absolute -top-20 -right-20 w-80 h-80 bg-white/5 rounded-full"></div>
+        <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-white/5 rounded-full"></div>
+    </div>
+    <div class="relative max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-4 leading-tight">
+            Ready to automate your hotspot?
+        </h2>
+        <p class="text-brand-200 text-base md:text-lg mb-8 max-w-xl mx-auto">
+            Join ISPs across East Africa who've ditched manual billing and started running smarter networks with goAfrica Connect.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3 justify-center">
+            <a href="{{ route('register') }}" class="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 active:scale-95 text-brand-700 font-extrabold px-8 py-4 rounded-2xl transition-all shadow-xl text-base">
+                🚀 Get Started Free
+            </a>
+            <a href="#contact" class="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 active:scale-95 text-white font-semibold border border-white/20 px-8 py-4 rounded-2xl transition-all text-base">
+                Talk to Us
+            </a>
+        </div>
+        <p class="text-brand-300 text-xs mt-5">3-day free trial · No credit card · Cancel anytime</p>
+    </div>
+</section>
+
+
+<!-- ============================================================
+     FOOTER
+============================================================ -->
+<footer class="bg-gray-950 text-gray-400 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
+        <div class="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 mb-10">
+
+            {{-- Logo & tagline --}}
+            <div class="text-center md:text-left">
+                <a href="/" class="inline-flex items-center gap-2.5 mb-3">
+                    <img src="/favicon.png" alt="goAfrica Connect" class="w-8 h-8 rounded-lg">
+                    <span class="font-extrabold text-lg text-white tracking-tight">goAfrica <span class="text-brand-400">Connect</span></span>
+                </a>
+                <p class="text-sm text-gray-500 max-w-xs">MikroTik hotspot billing &amp; M-Pesa automation for African ISPs.</p>
+            </div>
+
+            {{-- Nav links --}}
+            <nav class="flex flex-wrap justify-center md:justify-end gap-5 text-sm">
+                <a href="#features"  class="hover:text-white transition-colors">Features</a>
+                <a href="#pricing"   class="hover:text-white transition-colors">Pricing</a>
+                <a href="#contact"   class="hover:text-white transition-colors">Contact</a>
+                <a href="{{ route('login') }}"    class="hover:text-white transition-colors">Sign In</a>
+                <a href="{{ route('register') }}" class="hover:text-white transition-colors">Register</a>
+            </nav>
+
+        </div>
+
+        <div class="border-t border-gray-800 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-gray-600">
+            <p>&copy; {{ date('Y') }} goAfrica Connect. All rights reserved.</p>
+            <p>Built with ❤️ in Kenya for Africa</p>
+        </div>
+
     </div>
 </footer>
 
+
+<!-- ============================================================
+     JAVASCRIPT
+============================================================ -->
 <script>
-// Scroll reveal
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(e => {
-        if (e.isIntersecting) {
-            e.target.classList.add('revealed');
-            e.target.style.opacity = '1';
-            observer.unobserve(e.target);
-        }
+    // ── Sticky nav shadow on scroll ──────────────────────────────
+    const nav = document.getElementById('main-nav');
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 20);
+    }, { passive: true });
+
+
+    // ── Mobile menu toggle ───────────────────────────────────────
+    const burgerBtn  = document.getElementById('burger-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const iconOpen   = document.getElementById('icon-open');
+    const iconClose  = document.getElementById('icon-close');
+
+    burgerBtn.addEventListener('click', () => {
+        const isOpen = mobileMenu.classList.toggle('open');
+        iconOpen.classList.toggle('hidden', isOpen);
+        iconClose.classList.toggle('hidden', !isOpen);
     });
-}, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
 
-document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    // Close mobile menu on anchor link click
+    mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+            mobileMenu.classList.remove('open');
+            iconOpen.classList.remove('hidden');
+            iconClose.classList.add('hidden');
+        });
+    });
 
-// Sticky nav shadow shadow
-window.addEventListener('scroll', () => {
-    document.getElementById('navbar').classList.toggle('shadow-md', window.scrollY > 20);
-});
+
+    // ── Scroll reveal with IntersectionObserver ──────────────────
+    const revealEls = document.querySelectorAll('.reveal');
+
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('visible');
+                revealObserver.unobserve(entry.target);
+            }
+        });
+    }, {
+        threshold: 0.12,
+        rootMargin: '0px 0px -40px 0px'
+    });
+
+    revealEls.forEach(el => revealObserver.observe(el));
+
+
+    // ── Smooth scroll for anchor links ───────────────────────────
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function (e) {
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            const target = document.querySelector(targetId);
+            if (target) {
+                e.preventDefault();
+                const offset = nav.offsetHeight + 8;
+                const top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                window.scrollTo({ top, behavior: 'smooth' });
+            }
+        });
+    });
 </script>
+
 </body>
 </html>
