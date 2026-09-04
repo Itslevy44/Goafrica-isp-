@@ -74,6 +74,12 @@ class AuthController extends Controller
         Auth::logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+
+        // Clear any bound tenant from the IoC container
+        if (app()->has('currentTenant')) {
+            app()->forgetInstance('currentTenant');
+        }
+
         return redirect('/dashboard/login');
     }
 }
