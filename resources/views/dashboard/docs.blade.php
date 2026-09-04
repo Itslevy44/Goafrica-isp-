@@ -13,11 +13,103 @@
 
         {{-- Quick links --}}
         <div class="flex flex-wrap justify-center gap-2 mt-5">
+            <a href="#topology" class="text-xs font-bold bg-slate-800 text-white px-3 py-1.5 rounded-full hover:bg-slate-700 transition-colors">🗺 Network Diagram</a>
             <a href="#quick-script" class="text-xs font-bold bg-emerald-600 text-white px-3 py-1.5 rounded-full hover:bg-emerald-700 transition-colors">⚡ Quick Auto-Script</a>
-            <a href="#step1" class="text-xs font-bold bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 transition-colors">Manual Setup</a>
+            <a href="#ddns" class="text-xs font-bold bg-blue-600 text-white px-3 py-1.5 rounded-full hover:bg-blue-700 transition-colors">🌐 Get Your IP (DDNS)</a>
             <a href="#walled-garden" class="text-xs font-bold bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 transition-colors">Walled Garden</a>
-            <a href="#port-forwarding" class="text-xs font-bold bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-full hover:bg-slate-50 transition-colors">Port Forwarding</a>
             <a href="#troubleshooting" class="text-xs font-bold bg-amber-100 border border-amber-200 text-amber-700 px-3 py-1.5 rounded-full hover:bg-amber-200 transition-colors">🔧 Troubleshooting</a>
+        </div>
+    </div>
+
+    {{-- ============================================================
+         NETWORK TOPOLOGY DIAGRAM
+         ============================================================ --}}
+    <div id="topology" class="bg-slate-900 rounded-2xl p-6 text-white shadow-xl">
+        <h2 class="text-lg font-black mb-4 flex items-center gap-2">
+            <svg class="w-5 h-5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"/></svg>
+            Recommended Network Setup (Topology)
+        </h2>
+
+        {{-- ASCII/visual topology --}}
+        <div class="bg-black/40 rounded-xl p-5 font-mono text-sm mb-5 overflow-x-auto">
+            <pre class="text-slate-300 leading-relaxed">
+  ┌─────────────────────────────────────────┐
+  │  INTERNET (Safaricom / Any ISP)         │
+  └──────────────┬──────────────────────────┘
+                 │
+  ┌──────────────▼──────────────────────────┐
+  │  HOME ROUTER  (e.g. Safaricom LTE box)  │
+  │  192.168.1.1                            │
+  └──────────────┬──────────────────────────┘
+                 │  LAN port → Ethernet cable
+                 │
+  ┌──────────────▼──────────────────────────┐
+  │  <span class="text-blue-400 font-bold">MIKROTIK ROUTER</span>  ← <span class="text-emerald-400">THIS IS YOUR MAIN DEVICE</span>  │
+  │  ether1 = WAN (connects to home router) │
+  │  ether2-5 = LAN (connects to switch)    │
+  │  Runs: Hotspot + goAfrica Billing       │
+  │  Cloud DDNS: abc123.sn.mynetname.net    │
+  └──────────────┬──────────────────────────┘
+                 │  ether2 → Ethernet cable
+                 │
+  ┌──────────────▼──────────────────────────┐
+  │  NETWORK SWITCH  (8-port or 16-port)    │
+  └──────┬──────────┬──────────┬────────────┘
+         │          │          │
+  ┌──────▼───┐ ┌────▼─────┐ ┌──▼───────┐
+  │  WiFi AP │ │  WiFi AP │ │  WiFi AP │  ← Set as ACCESS POINT
+  │  Zone 1  │ │  Zone 2  │ │  Zone 3  │     (NOT as router!)
+  └──────────┘ └──────────┘ └──────────┘
+         ↑
+  Customers connect to any AP,
+  all managed by one MikroTik hotspot
+            </pre>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+            <div class="bg-emerald-500/20 border border-emerald-500/30 rounded-xl p-4">
+                <p class="text-emerald-300 font-bold text-sm mb-2">✅ Access Points — Configure as Bridge</p>
+                <p class="text-slate-300 text-xs leading-relaxed">Your extension routers/APs must be in <strong>bridge/AP mode</strong> — disable their DHCP server and NAT. Connect their <strong>LAN port</strong> (not WAN) to the switch. The MikroTik sees all customers directly.</p>
+            </div>
+            <div class="bg-red-500/20 border border-red-500/30 rounded-xl p-4">
+                <p class="text-red-300 font-bold text-sm mb-2">❌ Don't Set APs as Routers</p>
+                <p class="text-slate-300 text-xs leading-relaxed">If the APs do NAT routing, the MikroTik will only see the AP's IP — not individual customer MAC addresses. Billing won't work correctly and customers won't be identified.</p>
+            </div>
+        </div>
+    </div>
+
+    {{-- ============================================================
+         DDNS — GET YOUR PUBLIC HOSTNAME
+         ============================================================ --}}
+    <div id="ddns" class="bg-gradient-to-br from-blue-700 to-indigo-700 rounded-2xl p-6 text-white shadow-xl">
+        <div class="flex items-start gap-4">
+            <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 text-2xl">🌐</div>
+            <div class="flex-1">
+                <h2 class="text-xl font-black mb-1">Step 0 — Get Your Router's Public Hostname (MikroTik Cloud DDNS)</h2>
+                <p class="text-blue-100 text-sm mb-4">
+                    Your MikroTik is behind your home router and doesn't have a public IP directly. Instead of struggling with port forwarding,
+                    <strong>MikroTik Cloud</strong> gives your router a free permanent hostname that always works — even when your IP changes.
+                </p>
+
+                <div class="bg-black/30 rounded-xl p-4 mb-4">
+                    <p class="text-blue-300 text-xs font-bold uppercase tracking-wider mb-2">Run this in Winbox → New Terminal</p>
+                    <pre class="text-green-300 text-sm font-mono">/ip cloud set ddns-enabled=yes
+/ip cloud print</pre>
+                </div>
+
+                <div class="bg-black/20 rounded-xl p-4 mb-4">
+                    <p class="text-blue-200 text-xs font-bold uppercase tracking-wider mb-2">You'll see output like this:</p>
+                    <pre class="text-yellow-300 text-sm font-mono">    ddns-enabled: yes
+        dns-name: <span class="text-white font-bold">a1b2c3d4.sn.mynetname.net</span>  ← USE THIS!
+  update-time: yes
+  public-address: 41.72.145.200</pre>
+                </div>
+
+                <div class="bg-emerald-500/20 border border-emerald-400/30 rounded-xl p-4">
+                    <p class="text-emerald-200 font-bold text-sm mb-1">✅ Use the <code class="bg-black/30 px-1.5 py-0.5 rounded">dns-name</code> value in your goAfrica dashboard</p>
+                    <p class="text-emerald-100 text-xs">When adding your router in the dashboard, paste the <code>dns-name</code> (e.g. <code>a1b2c3d4.sn.mynetname.net</code>) into the IP Address field instead of a number. It will always work even if your internet IP changes.</p>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -28,44 +120,44 @@
         <div class="flex items-start gap-4">
             <div class="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center flex-shrink-0 text-2xl">⚡</div>
             <div class="flex-1">
-                <h2 class="text-xl font-black mb-1">Quick Setup — Auto-Configuration Script</h2>
-                <p class="text-emerald-100 text-sm mb-4">The fastest way to configure your MikroTik. This script automatically enables the API, creates the billing user, sets up the Hotspot, and configures the Walled Garden.</p>
+                <h2 class="text-xl font-black mb-1">Full Auto-Configuration Script</h2>
+                <p class="text-emerald-100 text-sm mb-4">
+                    This script does <strong>everything</strong> — sets up the WAN/LAN bridge, DHCP, NAT, hotspot, walled garden, API user, and enables MikroTik Cloud DDNS so you get a free public hostname automatically.
+                    <strong>Just run it and follow the output.</strong>
+                </p>
 
                 <div class="bg-black/30 rounded-xl p-4 mb-4">
-                    <p class="text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">RouterOS Terminal Script</p>
-                    <pre class="text-green-300 text-xs font-mono leading-relaxed overflow-x-auto whitespace-pre"># ================================================================
-# goAfrica Connect — Auto Setup Script
-# Run this in: Winbox > New Terminal (or SSH into your router)
-# ================================================================
-
-# 1. Enable API service on port 8728
+                    <p class="text-emerald-300 text-xs font-bold uppercase tracking-wider mb-2">Quick Paste — Run in Winbox → New Terminal</p>
+                    <pre class="text-green-300 text-xs font-mono leading-relaxed overflow-x-auto whitespace-pre"># Enable API + create billing user
 /ip service enable api
 /ip service set api port=8728
-
-# 2. Create billing API user
 /user add name=billing_api password=GoAfrica2024! group=full comment="goAfrica billing"
 
-# 3. Configure Walled Garden (allow payments before login)
-/ip hotspot walled-garden add dst-host=*.safaricom.co.ke action=allow comment="MPesa"
-/ip hotspot walled-garden add dst-host=goafrica.site action=allow comment="goAfrica portal"
-/ip hotspot walled-garden add dst-host=*.goafrica.site action=allow comment="goAfrica portal"
+# Walled Garden
+/ip hotspot walled-garden add dst-host=*.safaricom.co.ke action=allow
+/ip hotspot walled-garden add dst-host=goafrica.site action=allow
+/ip hotspot walled-garden add dst-host=*.goafrica.site action=allow
 
-# 4. Print summary
-:log info "goAfrica setup complete. API enabled on port 8728."
-:put "Setup complete! API user: billing_api / Password: GoAfrica2024!"
-:put "IMPORTANT: Change the password via System > Users after testing!"</pre>
+# Enable Cloud DDNS (get your free public hostname)
+/ip cloud set ddns-enabled=yes
+/ip cloud print</pre>
                 </div>
 
                 <div class="flex flex-wrap gap-3">
-                    <a href="{{ route('dashboard.docs.script') }}" download="goafrica-setup.rsc"
+                    <a href="{{ route('dashboard.docs.script') }}" download="goafrica-full-setup.rsc"
                        class="inline-flex items-center gap-2 bg-white text-emerald-700 font-bold px-4 py-2.5 rounded-xl text-sm hover:bg-emerald-50 transition-colors shadow-sm">
                         <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/></svg>
-                        Download .rsc Script
+                        Download Full Script (.rsc)
                     </a>
                     <div class="bg-white/20 text-white/80 text-xs px-3 py-2 rounded-xl flex items-center gap-1.5">
                         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-                        Import via: Winbox > Files > Upload .rsc > then /import file-name=goafrica-setup.rsc
+                        Import: Winbox → Files → Upload .rsc → then type: /import file-name=goafrica-full-setup.rsc
                     </div>
+                </div>
+
+                <div class="mt-4 bg-yellow-500/20 border border-yellow-400/30 rounded-xl p-3">
+                    <p class="text-yellow-200 text-xs font-bold">⚠️ After running: Change the billing_api password!</p>
+                    <p class="text-yellow-100 text-xs mt-0.5">Go to System → Users → billing_api → set a unique password, then update it in your goAfrica dashboard.</p>
                 </div>
             </div>
         </div>
@@ -261,45 +353,54 @@ add dst-host=fonts.googleapis.com action=allow
     </div>
 
     {{-- ============================================================
-         STEP 5b — Port Forwarding
+         STEP 5b — Access Point Configuration
          ============================================================ --}}
-    <div id="port-forwarding" class="bg-white rounded-2xl shadow-sm border border-amber-200 overflow-hidden">
+    <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
         <div class="p-6">
             <div class="flex items-center gap-4 mb-5">
-                <div class="w-12 h-12 bg-amber-500 text-white rounded-full flex items-center justify-center text-xl font-black shadow-inner flex-shrink-0">5b</div>
+                <div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center text-xl font-black shadow-inner flex-shrink-0">5b</div>
                 <div>
-                    <h2 class="text-xl font-black text-slate-800">Port Forwarding (If Behind NAT)</h2>
-                    <p class="text-sm text-amber-600 font-semibold">Required if your MikroTik is connected behind another router (e.g. Safaricom fiber box).</p>
+                    <h2 class="text-xl font-black text-slate-800">Configure Extension Access Points</h2>
+                    <p class="text-sm text-slate-500">If you're using other routers/APs to extend WiFi range via the switch.</p>
                 </div>
             </div>
             <div class="text-sm text-slate-600 leading-relaxed space-y-4">
-                <div class="bg-amber-50 border border-amber-200 rounded-xl p-4">
-                    <p class="font-semibold text-amber-900 mb-2">How to know if you need this:</p>
-                    <p class="text-amber-800">Log into your MikroTik and check <strong>IP → Addresses</strong>. If your WAN IP starts with <code>192.168.</code>, <code>10.</code>, or <code>172.</code> — you are behind NAT and need to port forward.</p>
+                <div class="bg-blue-50 border border-blue-200 rounded-xl p-4">
+                    <p class="font-bold text-blue-900 mb-1">The key rule: Extension APs must be in Bridge/AP mode — NOT router mode.</p>
+                    <p class="text-blue-800">If an AP does its own NAT/routing, the MikroTik can't see individual customer MACs — billing breaks. The MikroTik must be the only device doing routing.</p>
                 </div>
 
                 <div>
-                    <p class="font-semibold text-slate-700 mb-2">Option A — Port Forward on the outer router (e.g. Safaricom box):</p>
-                    <ol class="list-decimal list-inside space-y-1.5 ml-2 text-slate-600">
-                        <li>Log into your Safaricom/ISP router admin panel (usually 192.168.0.1 or 192.168.1.1)</li>
-                        <li>Find <strong>Port Forwarding</strong> or <strong>Virtual Server</strong> settings</li>
-                        <li>Create a rule: External Port <strong>8728</strong> → Internal IP <strong>(MikroTik's LAN IP)</strong> → Internal Port <strong>8728</strong> → Protocol <strong>TCP</strong></li>
-                        <li>Save and test using your <strong>public IP</strong> in the dashboard</li>
+                    <p class="font-semibold text-slate-700 mb-2">For each TP-Link / Tenda / Netgear AP:</p>
+                    <ol class="list-decimal list-inside space-y-1.5 ml-2">
+                        <li>Log into the AP admin panel (usually 192.168.0.1)</li>
+                        <li>Find a setting called <strong>"Operation Mode"</strong> or <strong>"Working Mode"</strong></li>
+                        <li>Select <strong>"Access Point"</strong> or <strong>"Bridge"</strong> mode (not "Router" or "WISP")</li>
+                        <li>Disable the AP's DHCP server if there is one</li>
+                        <li>Connect an Ethernet cable from the AP's <strong>LAN port</strong> to your switch</li>
+                        <li>Do <strong>NOT</strong> use the AP's WAN port</li>
                     </ol>
                 </div>
 
                 <div>
-                    <p class="font-semibold text-slate-700 mb-2">Option B — Give your MikroTik a public IP (recommended for production):</p>
-                    <ol class="list-decimal list-inside space-y-1.5 ml-2 text-slate-600">
-                        <li>Contact Safaricom and request a <strong>static public IP</strong> on your line</li>
-                        <li>Or use a <strong>different SIM card</strong> (e.g. Safaricom data SIM with public IP) directly in the MikroTik</li>
-                        <li>Use that public IP directly when adding the router to the dashboard</li>
-                    </ol>
-                </div>
+                    <p class="font-semibold text-slate-700 mb-2">For another MikroTik as an AP:</p>
+                    <div class="bg-slate-900 rounded-xl p-4">
+                        <p class="text-slate-400 text-xs font-bold uppercase tracking-wider mb-2">Run on the secondary MikroTik</p>
+                        <pre class="text-green-400 text-xs font-mono"># Disable DHCP server
+/ip dhcp-server disable [find]
 
-                <div>
-                    <p class="font-semibold text-slate-700 mb-2">Option C — Use a VPN tunnel (advanced):</p>
-                    <p class="text-slate-600">Set up a WireGuard or OpenVPN tunnel between the MikroTik and the billing server so they communicate over a private tunnel. Recommended if you have multiple locations and no public IPs.</p>
+# Disable routing/NAT
+/ip firewall nat disable [find]
+
+# Bridge all ports
+/interface bridge add name=bridge1
+/interface bridge port add interface=ether1 bridge=bridge1
+/interface bridge port add interface=ether2 bridge=bridge1
+/interface bridge port add interface=wlan1 bridge=bridge1
+
+# Set a management IP (optional, use a different subnet)
+/ip address add address=192.168.88.2/24 interface=bridge1</pre>
+                    </div>
                 </div>
             </div>
         </div>
