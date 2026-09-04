@@ -55,7 +55,14 @@
                     <div class="flex items-center gap-3 mt-1.5">
                         <span class="text-xs text-slate-400">{{ $notif->created_at->diffForHumans() }} · {{ $notif->created_at->format('M d, Y') }}</span>
                         @if(!empty($data['action_url']))
-                        <a href="{{ $data['action_url'] }}" class="text-xs font-bold text-blue-600 hover:underline">Take Action →</a>
+                        {{-- Mark as read then redirect --}}
+                        <form action="{{ route('dashboard.notifications.read', $notif->id) }}" method="POST" class="inline">
+                            @csrf
+                            <input type="hidden" name="redirect_to" value="{{ $data['action_url'] }}">
+                            <button type="submit" class="text-xs font-bold text-blue-600 hover:text-blue-800 hover:underline transition-colors">
+                                Take Action →
+                            </button>
+                        </form>
                         @endif
                     </div>
                 </div>

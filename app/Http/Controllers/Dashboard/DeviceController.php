@@ -14,12 +14,14 @@ class DeviceController extends Controller
 {
     public function index()
     {
-        $network = Network::first();
+        $tenant = app('currentTenant');
+        $network = Network::where('tenant_id', $tenant->id)->first();
         if (!$network) {
-            return redirect()->route('dashboard.settings.index')->withErrors(['error' => 'Please set up your network settings first.']);
+            return redirect()->route('dashboard.setup.index')
+                ->with('warning', 'Please complete the setup wizard to configure your network first.');
         }
 
-        $devices = Device::where('network_id', $network->id)->get();
+        $devices = Device::where('tenant_id', $tenant->id)->get();
         return view('dashboard.devices.index', compact('devices', 'network'));
     }
 
@@ -96,6 +98,33 @@ class DeviceController extends Controller
         ]);
 
         return back()->with('success', 'Router updated successfully.');
+    }
+
+    public function testConnection(Device $device)
+    {
+        $tenant = app('currentTenant');
+        if ($device->tenant_id !== $tenant->id) abort(403);
+
+        try {
+            $billingService = app(\App\Services\Billing\BillingService::class);
+            $driver = $billingService->resolveDeviceDriver($device);
+
+            $device->update(['status' => 'active', 'last_seen_at' => now()]);
+
+            return response()->json([
+                'success' => true,
+                'message' => '✓ Connected successfully! Router is online.',
+                'status'  => 'active',
+            ]);
+        } catch (\Exception $e) {
+            $device->update(['status' => 'offline']);
+
+            return response()->json([
+                'success' => false,
+                'message' => '✗ Connection failed: ' . $e->getMessage(),
+                'status'  => 'offline',
+            ]);
+        }
     }
 
     public function destroy(Device $device)

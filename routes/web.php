@@ -90,6 +90,7 @@ Route::group(['prefix' => 'dashboard'], function () {
         Route::get('/cmd', [DashboardController::class, 'cmd'])->name('dashboard.cmd');
         Route::post('/cmd', [DashboardController::class, 'runCmd'])->name('dashboard.runCmd');
         Route::get('/docs', [App\Http\Controllers\Dashboard\DocumentationController::class, 'index'])->name('dashboard.docs');
+        Route::get('/docs/script', [App\Http\Controllers\Dashboard\DocumentationController::class, 'downloadScript'])->name('dashboard.docs.script');
         
         // Notifications
         Route::get('/notifications', [App\Http\Controllers\Dashboard\NotificationController::class, 'index'])->name('dashboard.notifications.index');
@@ -129,6 +130,14 @@ Route::group(['prefix' => 'dashboard'], function () {
         Route::post('/devices', [App\Http\Controllers\Dashboard\DeviceController::class, 'store'])->name('dashboard.devices.store');
         Route::put('/devices/{device}', [App\Http\Controllers\Dashboard\DeviceController::class, 'update'])->name('dashboard.devices.update');
         Route::delete('/devices/{device}', [App\Http\Controllers\Dashboard\DeviceController::class, 'destroy'])->name('dashboard.devices.destroy');
+        Route::post('/devices/{device}/test', [App\Http\Controllers\Dashboard\DeviceController::class, 'testConnection'])->name('dashboard.devices.test');
+
+        // Setup Wizard
+        Route::get('/setup', [App\Http\Controllers\Dashboard\SetupWizardController::class, 'index'])->name('dashboard.setup.index');
+        Route::post('/setup/network', [App\Http\Controllers\Dashboard\SetupWizardController::class, 'saveNetwork'])->name('dashboard.setup.network');
+        Route::post('/setup/router', [App\Http\Controllers\Dashboard\SetupWizardController::class, 'saveRouter'])->name('dashboard.setup.router');
+        Route::post('/setup/offers', [App\Http\Controllers\Dashboard\SetupWizardController::class, 'saveOffers'])->name('dashboard.setup.offers');
+        Route::post('/setup/complete', [App\Http\Controllers\Dashboard\SetupWizardController::class, 'complete'])->name('dashboard.setup.complete');
 
         // Offers
         Route::get('/offers', [App\Http\Controllers\Dashboard\OfferController::class, 'index'])->name('dashboard.offers.index');

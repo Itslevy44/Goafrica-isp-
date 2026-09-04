@@ -1,16 +1,24 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="mb-6 flex justify-between items-center">
+<div class="mb-6 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
     <div>
         <h2 class="text-2xl font-bold text-slate-800 tracking-tight">Network Devices</h2>
         <p class="text-sm text-slate-500 mt-1">Manage your MikroTik routers and network infrastructure.</p>
     </div>
-    <button onclick="document.getElementById('add-device-modal').classList.remove('hidden')" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-sm transition-colors flex items-center">
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
+    <button onclick="document.getElementById('add-device-modal').classList.remove('hidden')"
+            class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm transition-colors flex items-center gap-2">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
         Add Router
     </button>
 </div>
+
+@if(session('success'))
+<div class="mb-4 bg-emerald-50 border border-emerald-200 text-emerald-800 px-4 py-3 rounded-2xl flex items-center gap-3 text-sm font-semibold">
+    <svg class="w-5 h-5 text-emerald-500 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+    {{ session('success') }}
+</div>
+@endif
 
 <!-- Devices Table Card -->
 <div class="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
@@ -20,49 +28,68 @@
                 <tr class="bg-slate-50 border-b border-slate-200">
                     <th class="py-3 px-4 font-semibold text-sm text-slate-600">Router Name</th>
                     <th class="py-3 px-4 font-semibold text-sm text-slate-600">IP Address</th>
-                    <th class="py-3 px-4 font-semibold text-sm text-slate-600">API Port</th>
+                    <th class="py-3 px-4 font-semibold text-sm text-slate-600">Port</th>
                     <th class="py-3 px-4 font-semibold text-sm text-slate-600">Status</th>
                     <th class="py-3 px-4 font-semibold text-sm text-slate-600 text-right">Actions</th>
                 </tr>
             </thead>
             <tbody class="divide-y divide-slate-100">
                 @forelse($devices as $device)
-                <tr class="hover:bg-slate-50/50 transition-colors">
+                <tr class="hover:bg-slate-50/50 transition-colors" id="device-row-{{ $device->id }}">
                     <td class="py-3 px-4">
-                        <div class="flex items-center">
-                            <div class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center justify-center mr-3">
-                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"></path></svg>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded bg-blue-100 text-blue-600 flex items-center justify-center flex-shrink-0">
+                                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01"/></svg>
                             </div>
                             <div>
                                 <div class="font-semibold text-slate-800 text-sm">{{ $device->name }}</div>
-                                <div class="text-xs text-slate-500 uppercase tracking-wide">{{ $device->type }}</div>
+                                <div class="text-xs text-slate-400 uppercase tracking-wide">{{ $device->type }}</div>
                             </div>
                         </div>
                     </td>
                     <td class="py-3 px-4 text-sm font-mono text-slate-600">{{ $device->ip_address }}</td>
                     <td class="py-3 px-4 text-sm text-slate-600">{{ $device->api_port }}</td>
                     <td class="py-3 px-4">
-                        <span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 capitalize">
-                            {{ $device->status }}
+                        <span id="status-badge-{{ $device->id }}" class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-bold
+                            {{ $device->status === 'active' ? 'bg-emerald-100 text-emerald-700' :
+                              ($device->status === 'offline' ? 'bg-red-100 text-red-700' : 'bg-slate-100 text-slate-500') }}">
+                            <span class="w-1.5 h-1.5 rounded-full
+                                {{ $device->status === 'active' ? 'bg-emerald-500 animate-pulse' :
+                                  ($device->status === 'offline' ? 'bg-red-500' : 'bg-slate-400') }}"></span>
+                            {{ ucfirst($device->status) }}
                         </span>
                     </td>
                     <td class="py-3 px-4 text-right">
-                        <button onclick="openEditModal({{ $device->id }}, '{{ $device->name }}', '{{ $device->ip_address }}', '{{ $device->api_port }}')" class="text-blue-600 hover:text-blue-800 text-sm font-medium mr-3">Edit</button>
-                        <form action="{{ route('dashboard.devices.destroy', $device) }}" method="POST" class="inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="text-red-500 hover:text-red-700 text-sm font-medium" onclick="return confirm('Remove this router? Users might lose connectivity.')">Delete</button>
-                        </form>
+                        <div class="flex items-center justify-end gap-2">
+                            {{-- Test Connection --}}
+                            <button onclick="testConnection({{ $device->id }})"
+                                    id="test-btn-{{ $device->id }}"
+                                    class="text-xs font-bold text-emerald-600 hover:text-emerald-800 bg-emerald-50 hover:bg-emerald-100 px-2.5 py-1.5 rounded-lg transition-colors border border-emerald-200">
+                                Test
+                            </button>
+                            <button onclick="openEditModal({{ $device->id }}, '{{ $device->name }}', '{{ $device->ip_address }}', '{{ $device->api_port }}')"
+                                    class="text-xs font-bold text-blue-600 hover:text-blue-800 bg-blue-50 hover:bg-blue-100 px-2.5 py-1.5 rounded-lg transition-colors border border-blue-200">
+                                Edit
+                            </button>
+                            <form action="{{ route('dashboard.devices.destroy', $device) }}" method="POST" class="inline"
+                                  onsubmit="return confirm('Remove this router? Users might lose connectivity.')">
+                                @csrf @method('DELETE')
+                                <button type="submit" class="text-xs font-bold text-red-500 hover:text-red-700 bg-red-50 hover:bg-red-100 px-2.5 py-1.5 rounded-lg transition-colors border border-red-100">
+                                    Delete
+                                </button>
+                            </form>
+                        </div>
                     </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="5" class="py-8 px-4 text-center">
-                        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-slate-100 text-slate-400 mb-3">
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path></svg>
-                        </div>
-                        <h3 class="text-slate-800 font-medium">No devices found</h3>
-                        <p class="text-slate-500 text-sm mt-1">Add your MikroTik router to get started.</p>
+                    <td colspan="5" class="py-12 px-4 text-center">
+                        <svg class="w-12 h-12 text-slate-300 mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+                        <h3 class="text-slate-700 font-bold">No routers yet</h3>
+                        <p class="text-slate-400 text-sm mt-1">Add your MikroTik router to start accepting payments.</p>
+                        <a href="{{ route('dashboard.setup.index') }}" class="inline-flex items-center gap-1.5 mt-3 text-sm font-bold text-blue-600 hover:underline">
+                            Use Setup Wizard →
+                        </a>
                     </td>
                 </tr>
                 @endforelse
@@ -173,6 +200,66 @@ function openEditModal(id, name, ip, port) {
     document.getElementById('edit-device-form').action = `/dashboard/devices/${id}`;
     
     document.getElementById('edit-device-modal').classList.remove('hidden');
+}
+
+async function testConnection(deviceId) {
+    const btn = document.getElementById('test-btn-' + deviceId);
+    const badge = document.getElementById('status-badge-' + deviceId);
+
+    btn.textContent = 'Testing...';
+    btn.disabled = true;
+    btn.classList.add('opacity-60', 'cursor-not-allowed');
+
+    try {
+        const token = document.querySelector('meta[name="csrf-token"]')?.content
+            || document.cookie.match(/XSRF-TOKEN=([^;]+)/)?.[1]?.replace(/%3D/g,'=') || '';
+
+        const res  = await fetch(`/dashboard/devices/${deviceId}/test`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': decodeURIComponent(token),
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+        });
+        const data = await res.json();
+
+        // Update status badge
+        const isOnline = data.status === 'active';
+        badge.innerHTML = `
+            <span class="w-1.5 h-1.5 rounded-full ${isOnline ? 'bg-emerald-500 animate-pulse' : 'bg-red-500'}"></span>
+            ${isOnline ? 'Active' : 'Offline'}
+        `;
+        badge.className = `inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full text-xs font-bold ${
+            isOnline ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'
+        }`;
+
+        // Show result toast
+        showToast(data.message, isOnline ? 'success' : 'error');
+
+    } catch(e) {
+        showToast('Network error. Could not reach server.', 'error');
+    } finally {
+        btn.textContent = 'Test';
+        btn.disabled = false;
+        btn.classList.remove('opacity-60', 'cursor-not-allowed');
+    }
+}
+
+function showToast(message, type) {
+    const existing = document.getElementById('test-toast');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.id = 'test-toast';
+    toast.className = `fixed bottom-5 right-5 z-50 px-4 py-3 rounded-xl text-sm font-semibold shadow-xl max-w-sm flex items-start gap-2 transition-all
+        ${type === 'success' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`;
+    toast.innerHTML = `
+        <span class="flex-1">${message}</span>
+        <button onclick="this.parentElement.remove()" class="text-white/70 hover:text-white flex-shrink-0 mt-0.5">✕</button>
+    `;
+    document.body.appendChild(toast);
+    setTimeout(() => toast?.remove(), 7000);
 }
 </script>
 @endsection

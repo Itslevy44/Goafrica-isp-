@@ -18,12 +18,19 @@ class NotificationController extends Controller
         return view('dashboard.notifications.index', compact('notifications'));
     }
 
-    public function markRead(string $id)
+    public function markRead(string $id, Request $request)
     {
         $notification = Auth::user()->notifications()->where('id', $id)->first();
         if ($notification) {
             $notification->markAsRead();
         }
+
+        // If a redirect_to was passed (from Take Action button), go there
+        $redirectTo = $request->input('redirect_to');
+        if ($redirectTo && str_starts_with($redirectTo, '/')) {
+            return redirect($redirectTo);
+        }
+
         return back();
     }
 

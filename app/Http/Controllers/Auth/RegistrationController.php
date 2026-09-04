@@ -63,6 +63,8 @@ class RegistrationController extends Controller
         // Bind the current tenant since we just logged them in
         app()->instance('currentTenant', Tenant::find($user->tenant_id));
 
-        return redirect()->route('dashboard.index')->with('success', 'Registration successful! Please check your email to verify your account.');
+        // Send new users to the setup wizard
+        return redirect()->route('dashboard.setup.index')
+            ->with('success', 'Welcome! Let\'s set up your hotspot network in 4 quick steps.');
     }
 }

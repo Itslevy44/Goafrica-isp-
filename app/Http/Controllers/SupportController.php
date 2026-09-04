@@ -4,10 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\SupportTicket;
 use App\Models\User;
-use App\Notifications\SupportTicketReplyNotification;
+use App\Notifications\NewSupportTicketNotification;
 use Illuminate\Http\Request;
-use Illuminate\Notifications\AnonymousNotifiable;
-use Illuminate\Support\Facades\Auth;
 
 class SupportController extends Controller
 {
@@ -26,7 +24,7 @@ class SupportController extends Controller
         // Link to a registered user if the email matches
         $user = User::where('email', $validated['email'])->first();
 
-        SupportTicket::create([
+        $ticket = SupportTicket::create([
             'name'    => $validated['name'],
             'email'   => $validated['email'],
             'subject' => $validated['subject'],
@@ -35,6 +33,16 @@ class SupportController extends Controller
             'status'  => 'open',
         ]);
 
-        return back()->with('contact_success', 'Your message has been sent. We\'ll get back to you shortly.');
+        // Notify all super admins via dashboard notification
+        $superAdmins = User::where('role', 'super_admin')->whereNull('tenant_id')->get();
+        foreach ($superAdmins as $admin) {
+            try {
+                $admin->notify(new NewSupportTicketNotification($ticket));
+            } catch (\Exception $e) {
+                \Illuminate\Support\Facades\Log::warning('Failed to notify super admin of new ticket: ' . $e->getMessage());
+            }
+        }
+
+        return back()->with('contact_success', "Your message has been sent. We'll get back to you shortly.");
     }
 }
