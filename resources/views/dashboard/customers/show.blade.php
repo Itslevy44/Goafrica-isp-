@@ -39,7 +39,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Spent</p>
-            <h3 class="text-2xl font-black text-slate-900 mt-1">{{ app('currentTenant')->currency ?? 'KES' }} {{ number_format($totalSpent, 2) }}</h3>
+            <h3 class="text-2xl font-black text-slate-900 mt-1">{{ $currentTenant->default_currency ?? 'KES' }} {{ number_format($totalSpent, 2) }}</h3>
         </div>
         <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
             <p class="text-xs font-bold text-slate-400 uppercase tracking-wider">Total Sessions</p>

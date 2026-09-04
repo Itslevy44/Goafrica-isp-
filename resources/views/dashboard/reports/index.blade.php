@@ -32,7 +32,7 @@
                 </div>
             </div>
             <h3 class="text-2xl font-black text-slate-900 tracking-tight">
-                {{ $currentTenant->currency ?? 'KES' }} {{ number_format($thisMonthRevenue / 100, 2) }}
+                {{ $currentTenant->default_currency ?? 'KES' }} {{ number_format($thisMonthRevenue / 100, 2) }}
             </h3>
             <p class="text-xs text-slate-500 mt-1">Direct M-Pesa deposits</p>
         </div>
@@ -46,7 +46,7 @@
                 </div>
             </div>
             <h3 class="text-2xl font-black text-slate-900 tracking-tight">
-                {{ $currentTenant->currency ?? 'KES' }} {{ number_format($totalRevenue / 100, 2) }}
+                {{ $currentTenant->default_currency ?? 'KES' }} {{ number_format($totalRevenue / 100, 2) }}
             </h3>
             <p class="text-xs text-slate-500 mt-1">Total revenue collected</p>
         </div>
@@ -138,7 +138,7 @@
                     </div>
                     @if(request()->hasAny(['search', 'status', 'date_from']))
                     <div class="text-xs font-bold text-emerald-600">
-                        Filtered Revenue: {{ $currentTenant->currency ?? 'KES' }} {{ number_format($filteredTotalMinor / 100, 2) }}
+                        Filtered Revenue: {{ $currentTenant->default_currency ?? 'KES' }} {{ number_format($filteredTotalMinor / 100, 2) }}
                     </div>
                     @endif
                 </div>
@@ -235,7 +235,7 @@
                                 </div>
                             </div>
                             <div class="text-right">
-                                <div class="text-xs font-black text-slate-900">{{ $currentTenant->currency ?? 'KES' }} {{ number_format($stat->total_revenue / 100, 0) }}</div>
+                                <div class="text-xs font-black text-slate-900">{{ $currentTenant->default_currency ?? 'KES' }} {{ number_format($stat->total_revenue / 100, 0) }}</div>
                             </div>
                         </div>
                         @if(!$loop->last)

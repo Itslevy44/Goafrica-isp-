@@ -11,7 +11,8 @@ class OfferController extends Controller
 {
     public function index()
     {
-        $tenant = app('currentTenant') ?? auth()->user()->tenant;
+        $tenant = app('currentTenant');
+        if (!$tenant) abort(403, 'No tenant context.');
         $network = Network::where('tenant_id', $tenant->id)->first();
 
         if (!$network) {
@@ -25,7 +26,8 @@ class OfferController extends Controller
 
     public function store(Request $request)
     {
-        $tenant = app('currentTenant') ?? auth()->user()->tenant;
+        $tenant = app('currentTenant');
+        if (!$tenant) abort(403, 'No tenant context.');
         $network = Network::where('tenant_id', $tenant->id)->firstOrFail();
 
         $validated = $request->validate([

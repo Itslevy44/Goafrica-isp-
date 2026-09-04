@@ -48,7 +48,8 @@ class ReportController extends Controller
 
     public function export(Request $request): StreamedResponse
     {
-        $tenant = app('currentTenant') ?? auth()->user()->tenant;
+        $tenant = app('currentTenant');
+        if (!$tenant) abort(403, 'No tenant context.');
         $query  = $this->buildQuery($request, $tenant->id)->orderBy('created_at', 'desc');
 
         $filename = 'transactions_' . now()->format('Y_m_d_His') . '.csv';
@@ -84,7 +85,8 @@ class ReportController extends Controller
     }
     public function index(Request $request)
     {
-        $tenant = app('currentTenant') ?? auth()->user()->tenant;
+        $tenant = app('currentTenant');
+        if (!$tenant) abort(403, 'No tenant context.');
 
         // Revenue Metrics
         $totalRevenue = Transaction::where('tenant_id', $tenant->id)

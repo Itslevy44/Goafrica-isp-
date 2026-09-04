@@ -4,59 +4,50 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\InternetSession;
-use App\Services\Devices\MikroTikDriver;
-use Illuminate\Support\Facades\Crypt;
+use App\Services\Billing\BillingService;
+use Illuminate\Support\Facades\Log;
 
 class CleanupSessions extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'sessions:cleanup';
+    protected $signature   = 'sessions:cleanup';
+    protected $description = 'Checks for expired internet sessions and disconnects them from the router.';
 
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
-    protected $description = 'Checks for expired internet sessions and disconnects them from the router';
-
-    /**
-     * Execute the console command.
-     */
-    public function handle()
+    public function handle(BillingService $billingService): void
     {
         $expiredSessions = InternetSession::where('ends_at', '<', now())
             ->where('status', 'active')
+            ->with('device')
             ->get();
 
-        $this->info("Found {$expiredSessions->count()} expired sessions.");
+        $this->info("Found {$expiredSessions->count()} expired sessions to clean up.");
+
+        $disconnected = 0;
+        $failed       = 0;
 
         foreach ($expiredSessions as $session) {
             $device = $session->device;
-            if ($device && $device->type === 'mikrotik') {
+
+            if ($device) {
                 try {
-                    $credentials = json_decode(Crypt::decryptString($device->credentials_encrypted), true);
-                    
-                    $driver = new MikroTikDriver();
-                    $connected = $driver->connect($device->ip_address, $device->api_port, $credentials);
-                    
-                    if ($connected) {
-                        $driver->disconnectUser($session->mac_address);
-                        $session->update(['status' => 'expired']);
-                        $this->info("Terminated session for MAC: {$session->mac_address}");
-                    } else {
-                        $this->error("Failed to connect to router IP: {$device->ip_address} for MAC {$session->mac_address}");
-                    }
+                    $driver = $billingService->resolveDeviceDriver($device);
+                    $driver->disconnectUser($session->mac_address);
+                    $disconnected++;
+                    $this->line("  ✓ Disconnected MAC {$session->mac_address} from {$device->name}");
                 } catch (\Exception $e) {
-                    $this->error("Exception terminating session for MAC {$session->mac_address}: " . $e->getMessage());
+                    $failed++;
+                    $this->warn("  ✗ Could not disconnect MAC {$session->mac_address}: {$e->getMessage()}");
+                    Log::warning("CleanupSessions: failed to disconnect {$session->mac_address}", [
+                        'session_id' => $session->id,
+                        'device_id'  => $device->id,
+                        'error'      => $e->getMessage(),
+                    ]);
                 }
-            } else {
-                $session->update(['status' => 'expired']);
-                $this->info("Marked session as expired for MAC: {$session->mac_address} (No device linked)");
             }
+
+            // Mark expired regardless of whether router disconnect succeeded
+            $session->update(['status' => 'expired']);
         }
+
+        $this->info("Done. Disconnected: {$disconnected} | Failed: {$failed} | Total: {$expiredSessions->count()}");
     }
 }

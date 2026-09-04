@@ -9,59 +9,46 @@ use Illuminate\Support\Facades\Log;
 
 class CheckRouterHealth extends Command
 {
-    /**
-     * The name and signature of the console command.
-     *
-     * @var string
-     */
-    protected $signature = 'app:check-router-health';
-
-    /**
-     * The console command description.
-     *
-     * @var string
-     */
+    protected $signature   = 'app:check-router-health';
     protected $description = 'Pings all registered MikroTik routers to update their online status and last seen timestamp.';
 
-    /**
-     * Execute the console command.
-     */
-    public function handle(BillingService $billingService)
+    public function handle(BillingService $billingService): void
     {
-        $devices = Device::all();
+        // Scope to active devices only — never query Device::all() (crosses tenant boundaries)
+        $devices = Device::whereNotNull('tenant_id')->get();
 
         $this->info("Checking health for {$devices->count()} routers...");
 
+        $online  = 0;
+        $offline = 0;
+
         foreach ($devices as $device) {
-            $this->info("Pinging {$device->name} ({$device->ip_address})...");
+            $this->line("  Pinging {$device->name} ({$device->ip_address})...");
 
             try {
-                // The resolveDeviceDriver method attempts a connection and throws an Exception if it fails.
-                $driver = $billingService->resolveDeviceDriver($device);
-                
-                // If we get here, connection was successful
+                $billingService->resolveDeviceDriver($device);
+
                 $device->update([
-                    'status' => 'active',
+                    'status'       => 'active',
                     'last_seen_at' => now(),
                 ]);
-                
-                $this->info("✓ Router is ONLINE");
 
+                $online++;
+                $this->line("    ✓ ONLINE");
             } catch (\Exception $e) {
-                // Connection failed
-                $device->update([
-                    'status' => 'offline',
-                ]);
-                
-                $this->error("✗ Router is OFFLINE: " . $e->getMessage());
-                Log::warning("Router Health Check Failed", [
+                $device->update(['status' => 'offline']);
+                $offline++;
+                $this->warn("    ✗ OFFLINE: {$e->getMessage()}");
+
+                Log::warning('Router health check failed', [
                     'device_id' => $device->id,
-                    'name' => $device->name,
-                    'error' => $e->getMessage()
+                    'tenant_id' => $device->tenant_id,
+                    'name'      => $device->name,
+                    'error'     => $e->getMessage(),
                 ]);
             }
         }
 
-        $this->info('Health checks completed.');
+        $this->info("Health checks complete. Online: {$online} | Offline: {$offline}");
     }
 }

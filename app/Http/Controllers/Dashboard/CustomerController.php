@@ -20,16 +20,19 @@ class CustomerController extends Controller
         }
 
         $sessions = InternetSession::where('customer_id', $customer->id)
+            ->where('tenant_id', $tenant->id)
             ->with('device', 'network')
             ->orderBy('started_at', 'desc')
             ->paginate(15);
 
         $transactions = \App\Models\Transaction::where('customer_id', $customer->id)
+            ->where('tenant_id', $tenant->id)
             ->with('offer')
             ->orderBy('created_at', 'desc')
             ->paginate(15);
 
         $totalSpent = \App\Models\Transaction::where('customer_id', $customer->id)
+            ->where('tenant_id', $tenant->id)
             ->where('status', 'success')
             ->sum('amount_minor') / 100;
 

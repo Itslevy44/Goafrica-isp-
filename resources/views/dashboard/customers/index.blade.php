@@ -38,7 +38,7 @@
                         <div class="text-xs text-slate-400 mt-0.5">{{ $customer->sessions_count }} total sessions</div>
                     </td>
                     <td class="py-3 px-6 font-medium text-slate-800 text-sm">
-                        {{ app('currentTenant')->currency ?? 'KES' }} {{ number_format($customer->total_spent, 2) }}
+                        {{ $currentTenant->default_currency ?? 'KES' }} {{ number_format($customer->total_spent, 2) }}
                     </td>
                     <td class="py-3 px-6">
                         @if($customer->is_banned)

@@ -22,19 +22,22 @@ class DashboardController extends Controller
         $balance = $walletService->getBalance($tenant);
         $payoutAccount = PayoutAccount::where('tenant_id', $tenant->id)->where('is_active', true)->first();
         
+        // Scoped to this tenant only
         $recentTransactions = Transaction::with('offer', 'customer')
+            ->where('tenant_id', $tenant->id)
             ->orderBy('created_at', 'desc')
             ->limit(10)
             ->get();
             
         $activeSessions = InternetSession::with('customer')
+            ->where('tenant_id', $tenant->id)
             ->where('status', 'active')
             ->where('ends_at', '>', now())
             ->orderBy('started_at', 'desc')
             ->limit(10)
             ->get();
 
-        $devices = Device::all();
+        $devices = Device::where('tenant_id', $tenant->id)->get();
 
         // 7-Day Revenue Chart Data
         $revenueData = Transaction::where('tenant_id', $tenant->id)
@@ -61,8 +64,12 @@ class DashboardController extends Controller
     public function cmd()
     {
         $tenant = app('currentTenant');
-        $devices = Device::all();
-        $logs = DeviceCommandLog::with('user', 'device')->orderBy('created_at', 'desc')->limit(50)->get();
+        $devices = Device::where('tenant_id', $tenant->id)->get();
+        $logs = DeviceCommandLog::with('user', 'device')
+            ->where('tenant_id', $tenant->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(50)
+            ->get();
 
         return view('dashboard.cmd', compact('devices', 'logs', 'tenant'));
     }
@@ -74,7 +81,9 @@ class DashboardController extends Controller
             'command' => 'required|string',
         ]);
 
-        $device = Device::findOrFail($request->device_id);
+        $device = Device::where('id', $request->device_id)
+            ->where('tenant_id', app('currentTenant')->id)
+            ->firstOrFail();
         $command = $request->command;
 
         try {

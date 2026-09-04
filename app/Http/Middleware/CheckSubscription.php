@@ -8,19 +8,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CheckSubscription
 {
-    /**
-     * Handle an incoming request.
-     *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
-     */
     public function handle(Request $request, Closure $next): Response
     {
+        // app('currentTenant') throws if the binding doesn't exist.
+        // Super admins have no tenant, so we must check first.
+        if (! app()->bound('currentTenant')) {
+            return $next($request);
+        }
+
         $tenant = app('currentTenant');
 
         if ($tenant) {
             if (is_null($tenant->subscription_ends_at) || $tenant->subscription_ends_at->isPast()) {
-                // Ensure we don't end up in an infinite redirect loop
-                if (! $request->routeIs('dashboard.subscribe.*') && ! $request->routeIs('dashboard.logout')) {
+                if (
+                    ! $request->routeIs('dashboard.subscribe.*') &&
+                    ! $request->routeIs('dashboard.logout') &&
+                    ! $request->routeIs('dashboard.setup.*') &&
+                    ! $request->routeIs('dashboard.notifications.*')
+                ) {
                     return redirect()->route('dashboard.subscribe.index');
                 }
             }

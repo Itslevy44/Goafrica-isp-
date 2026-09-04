@@ -12,8 +12,8 @@ class Transaction extends Model
 
     protected $fillable = [
         'tenant_id', 'network_id', 'customer_id', 'offer_id', 'gateway',
-        'gateway_ref', 'amount_minor', 'currency', 'status', 'raw_payload',
-        'commission_rate', 'commission_amount_minor', 'net_amount_minor'
+        'gateway_ref', 'gateway_transaction_id', 'amount_minor', 'currency',
+        'status', 'raw_payload', 'commission_rate', 'commission_amount_minor', 'net_amount_minor'
     ];
 
     protected $casts = [
@@ -34,5 +34,10 @@ class Transaction extends Model
     public function network(): BelongsTo
     {
         return $this->belongsTo(Network::class);
+    }
+
+    public function tenant(): BelongsTo
+    {
+        return $this->belongsTo(Tenant::class);
     }
 }
